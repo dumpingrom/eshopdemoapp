@@ -18,18 +18,6 @@ public class MainActivity extends Activity {
     DECLARE VIEWS
      */
 
-    /*TextView label_hats = null;
-    ImageView icon_hats = null;
-
-    TextView label_eyewear = null;
-    ImageView icon_eyewear = null;
-
-    TextView label_gloves = null;
-    ImageView icon_gloves = null;
-
-    TextView label_bags = null;
-    ImageView icon_bags = null;*/
-
     RelativeLayout home_hats = null;
 
     ImageView home_hats_img = null;
@@ -63,10 +51,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
-        Typeface roboto = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Regular.ttf");
         Typeface roboto_black = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf");
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
-        Typeface roboto_italic = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Italic.ttf");
 
         setContentView(R.layout.activity_main);
 
@@ -148,7 +133,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "hats");
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                //finish();
             }
             else if (v == home_shoes){
                 Intent i = new Intent(MainActivity.this , Category.class);
@@ -156,7 +141,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "shoes");
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                //finish();
             }
             else if (v == home_glasses){
                 Intent i = new Intent(MainActivity.this, Category.class);
@@ -164,7 +149,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "glasses");
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                //finish();
             }
             else if(v == home_bags){
                 Intent i = new Intent(MainActivity.this, Category.class);
@@ -172,7 +157,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "bags");
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                //finish();
             }
         }
     };
@@ -203,4 +188,10 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }*/
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        finish();
+    }
 }

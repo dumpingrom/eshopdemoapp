@@ -4,13 +4,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/eshop_logo"
+        android:icon="@drawable/ic_eshop"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,21 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Bags"
-            android:label="@string/app_name" >
-            <!-- <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
-        </activity>
-        <activity
             android:name=".Checkout"
-            android:label="@string/app_name" >
-            <!-- <intent-filter>
+            android:label="@string/app_name"
+            android:allowTaskReparenting="true">
+            <!--<intent-filter>
                  <action android:name="android.intent.action.MAIN" />
 
-                 <category android:name="android.intent.category.LAUNCHER" />
+                 <category android:name="android.intent.category.HOME" />
              </intent-filter>-->
         </activity>
         <activity
@@ -61,9 +53,6 @@
                  <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>-->
             </activity>
-        <activity android:name=".Header">
-
-        </activity>
     </application>
 
 </manifest>

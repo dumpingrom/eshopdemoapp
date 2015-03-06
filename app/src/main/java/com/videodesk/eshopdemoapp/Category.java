@@ -331,7 +331,7 @@ public class Category extends Activity {
                                     b.putString("cat", getCategory());
                                     i.putExtras(b);
                                     startActivity(new Intent(getBaseContext(), Product.class).putExtras(b));
-                                    finish();
+                                    //finish();
                                 }
                             });
                         }

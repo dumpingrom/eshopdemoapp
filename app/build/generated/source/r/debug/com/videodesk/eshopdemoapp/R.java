@@ -1310,11 +1310,11 @@ containing a value of this type.
         public static final int abc_textfield_search_activated_mtrl_alpha=0x7f020030;
         public static final int abc_textfield_search_default_mtrl_alpha=0x7f020031;
         public static final int abc_textfield_search_material=0x7f020032;
-        public static final int eshop_logo=0x7f020033;
-        public static final int home_icono_bags=0x7f020034;
-        public static final int home_icono_glasses=0x7f020035;
-        public static final int home_icono_hats=0x7f020036;
-        public static final int home_icono_shoes=0x7f020037;
+        public static final int home_icono_bags=0x7f020033;
+        public static final int home_icono_glasses=0x7f020034;
+        public static final int home_icono_hats=0x7f020035;
+        public static final int home_icono_shoes=0x7f020036;
+        public static final int ic_eshop=0x7f020037;
         public static final int ic_launcher=0x7f020038;
         public static final int product_bags_01=0x7f020039;
         public static final int product_bags_02=0x7f02003a;

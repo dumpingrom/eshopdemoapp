@@ -157,7 +157,7 @@ public class Cart extends Activity {
                     img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     img.setId(View.generateViewId());
 
-                    RelativeLayout.LayoutParams imgParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    RelativeLayout.LayoutParams imgParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     imgParams.width = pxFromDp(this, 75);
                     imgParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
                     imgParams.setMarginStart(10);
@@ -194,8 +194,8 @@ public class Cart extends Activity {
                     Toast.makeText(getApplicationContext(), DataHolder.getInstance().getProduct(toRemove)[0]+" has been removed from your cart.", Toast.LENGTH_LONG).show();
                     DataHolder.getInstance().removeFromCart(toRemove);
                     Intent intent = getIntent();
-                    finish();
                     startActivity(intent);
+                    finish();
                 }
             });
 
