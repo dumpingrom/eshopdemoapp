@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="color_hats" type="color">#F7CE5A</item>
+    <item name="color_shoes" type="color">#7BCECE</item>
+    <item name="color_glasses" type="color">#EF4A5A</item>
+    <item name="color_bags" type="color">#31C6EF</item>
+    <item name="color_background" type="color">#E7E7E7</item>
+    <item name="white" type="color">#FFFFFF</item>
+    <item name="black" type="color">#000000</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/color_hats</item>
+        <item>@color/color_shoes</item>
+        <item>@color/color_glasses</item>
+        <item>@color/color_bags</item>
+        <item>@color/white</item>
+        <item>@color/black</item>
+        <item>@color/color_background</item>
+    </integer-array>
+
+</resources>

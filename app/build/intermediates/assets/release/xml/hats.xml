@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<products>
+	<product>
+		<name>The Derby</name>
+		<description>Shown above in classic grey, classic weight</description>
+        <long><![CDATA[An english invention of the victorian era, the Derby's charm and originality make it a timeless classic.
+
+Our design team worked hard to get a great smooth finish, but kept things firm like on a traditional derby. Impeccably designed using original-era derby blocks, this derby is available in black, grey and brown.]]></long>
+		<price>550</price>
+		<image>product_hats_01</image>
+	</product>
+	<product>
+		<name>The Chicago</name>
+		<description>Do you want to look like Al Capone?</description>
+        <long><![CDATA[Our best-selling hat is a study in adaptability. this is the topper that looks great on everyone.
+
+Our timeless chicago style fedora looks sharp in our lightweight, flecked black &amp; gold felt. mix it with other textures like tweeds and knits for a dapper look. standard crown, 2 1/4", double-stitched, under-welted brim.]]></long>
+		<price>650</price>
+		<image>product_hats_02</image>
+	</product>
+    <product>
+        <name>The Americana</name>
+        <description>It looks like the Panama but on a Yankee point of view.</description>
+        <long><![CDATA[This fedora was shaped on a vintage french mold, but the look is all american.
+
+Our first season officially releasing this style. Fuller in the crown, and wider dimensions for a bigger guy, but not too boxy. Excellent compliment for a strong chin.]]></long>
+        <price>360</price>
+        <image>product_hats_03</image>
+    </product>
+    <product>
+        <name>The Mitchum</name>
+        <description>It is Romain's favorite!</description>
+        <long><![CDATA[With a higher crown, and wider brim, this 40s iconic piece has got lots of swagger. its proportions and style make it a great choice for a solidly built guy. show here with a dark green binding and ribbon that bring out the subtle pale green color of this super-soft felt. full-crown, c-shaped fedora. 2 3/4" brim, 19 ligne (1 3/4") ribbon.]]></long>
+        <price>650</price>
+        <image>product_hats_04</image>
+    </product>
+</products>

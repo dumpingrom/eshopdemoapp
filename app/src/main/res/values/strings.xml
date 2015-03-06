@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My e-Shop</string>
+    <string name="shop">SHOP</string>
+
+    <!-- Main -->
+
+    <string name="hats">HATS</string>
+    <string name="hats_desc">Topping on the ice cream!</string>
+    <string name="shoes">SHOES</string>
+    <string name="shoes_desc">Walking on sunshine!</string>
+    <string name="glasses">GLASSES</string>
+    <string name="glasses_desc">Before your very eyes</string>
+    <string name="bags">BAGS</string>
+    <string name="bags_desc">What\'s in the bag!?</string>
+    <string name="cart">YOUR CART</string>
+
+    <string name="one">01</string>
+    <string name="two">02</string>
+    <string name="three">03</string>
+    <string name="four">04</string>
+
+    <!-- Checkout -->
+    <string name="goToCheckout">GO TO CHECKOUT PAGE</string>
+
+    <string name="payment"><b>° </b>PAYMENT<b> °</b></string>
+
+    <string name="checkout_identity">Please enter your identity information.</string>
+    <string name="checkout_firstname">First Name</string>
+    <string name="checkout_lastname">Last Name</string>
+    <string name="checkout_email">E-mail address</string>
+
+    <string name="checkout_delivery">Please enter your delivery information</string>
+    <string name="checkout_address1">Address line 1</string>
+    <string name="checkout_address2">Address line 2</string>
+    <string name="checkout_address3">Address line 3</string>
+    <string name="checkout_city">City</string>
+    <string name="checkout_zipcode">Zip code</string>
+
+    <string name="checkout_payment">Please enter your payment information</string>
+    <string name="checkout_cctype">Credit Card Type</string>
+    <string name="checkout_ccnumber">Card Number</string>
+    <string name="checkout_ccname">Card holder name</string>
+    <string name="checkout_ccv">CCV Code</string>
+    <string name="checkout_ccexpmonth">Exp. Month</string>
+    <string name="checkout_ccexpyear">Exp. Year</string>
+    <string name="checkout_submit">Proceed to payment</string>
+
+    <string name="cctype">Credit Card type</string>
+    <string name="cctype1">VISA</string>
+    <string name="cctype2">MasterCard</string>
+    <string name="cctype3">American Express</string>
+    <string name="cctype4">Discovery</string>
+
+
+    <!-- Other -->
+    <string name="action_settings">Settings</string>
+
+</resources>
