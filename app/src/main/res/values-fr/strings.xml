@@ -52,6 +52,13 @@
     <string name="cctype3">American Express</string>
     <string name="cctype4">Discovery</string>
 
+    <string-array name="menu">
+        <item>Chapeaux</item>
+        <item>Chaussures</item>
+        <item>Lunettes</item>
+        <item>Sacs</item>
+    </string-array>
+
 
     <!-- Other -->
     <string name="action_settings">Paramètres</string>

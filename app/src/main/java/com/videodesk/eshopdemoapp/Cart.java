@@ -8,8 +8,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,21 +24,68 @@ import android.widget.Toast;
  * Created by romain@videodesk on 04/03/15.
  */
 public class Cart extends Activity {
+    LinearLayout cart;
+
+    LinearLayout cartContainer;
 
     Button tmp_checkout_btn = null;
+
+    LinearLayout menu_button;
+    LinearLayout slidermenu;
+    ImageView slidermenu_hats;
+    ImageView slidermenu_shoes;
+    ImageView slidermenu_glasses;
+    ImageView slidermenu_bags;
+    ImageView slidermenu_cart;
+
+    RelativeLayout header;
+    TextView headerCartTitle;
+
+    boolean isMenuOpen;
+
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
+
+        slidermenu = (LinearLayout)getLayoutInflater().inflate(R.layout.slider_menu, null);
+        slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
+        header = (RelativeLayout)findViewById(R.id.header);
+        cart = (LinearLayout)findViewById(R.id.cart);
+        cartContainer = (LinearLayout) findViewById(R.id.cart_container);
+        headerCartTitle = (TextView)findViewById(R.id.header_cart_title);
+
+        cart.addView(slidermenu, 0);
+
+
+        /*
+        SLIDER MENU
+         */
+
+        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
+        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
+        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
+        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
+        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
+        slidermenu_hats.setOnClickListener(handler);
+        slidermenu_shoes.setOnClickListener(handler);
+        slidermenu_glasses.setOnClickListener(handler);
+        slidermenu_bags.setOnClickListener(handler);
+        slidermenu_cart.setOnClickListener(handler);
+        header.setOnClickListener(handler);
+
+
+        setIsMenuOpen(false);
+
+        /*
+        END SLIDER MENU
+         */
 
         Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
         Typeface roboto = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Regular.ttf");
         Typeface roboto_black = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf");
         Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
         Typeface roboto_italic = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Italic.ttf");
-
-        LinearLayout cartContainer = (LinearLayout) findViewById(R.id.cart_container);
-        TextView headerCartTitle = (TextView)findViewById(R.id.header_cart_title);
         headerCartTitle.setTypeface(roboto_bold);
 
 
@@ -86,6 +136,11 @@ public class Cart extends Activity {
         }
     }
 
+    /*****************
+     * GENERATE CART ITEMS AS RELATIVE LAYOUTS
+     * @param i, int from DataHolder
+     * @return RelativeLayout
+     */
     public RelativeLayout cartItem(int i){
         RelativeLayout rl = new RelativeLayout(this);
 
@@ -200,10 +255,10 @@ public class Cart extends Activity {
             });
 
             rl.addView(trash);
-            Log.d("Product Cart*********", "Adding trash icon as View #"+trash.getId());
+            //Log.d("Product Cart*********", "Adding trash icon as View #"+trash.getId());
         }
 
-        Log.d("PRODUCT IN CART******", "Displaying Product "+DataHolder.getInstance().getProduct(i)[0]+" in Cart");
+        //Log.d("PRODUCT IN CART******", "Displaying Product "+DataHolder.getInstance().getProduct(i)[0]+" in Cart");
         LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rlp.setMargins(pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20));
         rl.setLayoutParams(rlp);
@@ -216,6 +271,9 @@ public class Cart extends Activity {
     TOOLS
      */
 
+    /*
+        unit conversion
+     */
     public static int dpFromPx(final Context context, final float px) {
         return Math.round(px / context.getResources().getDisplayMetrics().density);
     }
@@ -223,8 +281,141 @@ public class Cart extends Activity {
     public static int pxFromDp(final Context context, final float dp) {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
+    /*
+        end unit conversion
+     */
+
+    /*
+        slider menu animations
+     */
+    public void expand(final View v){
+        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
+
+        v.getLayoutParams().height = 0;
+        v.setVisibility(View.VISIBLE);
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    public void collapse(final View v){
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if(interpolatedTime == 1){
+                    v.setVisibility(View.GONE);
+                }
+                else{
+                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+    /*
+       end slider menu animations
+     */
 
     /*
     END TOOLS
+     */
+
+    /*
+    HANDLER
+     */
+    View.OnClickListener handler = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            if (v == slidermenu_hats){
+                Intent i = new Intent(getApplicationContext() , Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "hats");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if (v == slidermenu_shoes){
+                Intent i = new Intent(getApplicationContext() , Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "shoes");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if (v == slidermenu_glasses){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "glasses");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if(v == slidermenu_bags){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "bags");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if(v == slidermenu_cart){
+                Intent i = new Intent(getApplicationContext(), Cart.class);
+                startActivity(i);
+            }
+            else if(v == header){
+                if(getIsMenuOpen() == true){
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    collapse(slidermenu);
+                    setIsMenuOpen(false);
+                }
+                else{
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    expand(slidermenu);
+                    setIsMenuOpen(true);
+                }
+            }
+        }
+    };
+    /*
+    END HANDLER
+     */
+
+    /*
+   GET/SET
+    */
+    private void setIsMenuOpen(boolean b){
+        this.isMenuOpen = b;
+    }
+
+    private boolean getIsMenuOpen(){
+        return this.isMenuOpen;
+    }
+    /*
+    END GET/SET
      */
 }

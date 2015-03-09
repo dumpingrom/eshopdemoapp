@@ -13,6 +13,8 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,6 +34,16 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class Category extends Activity {
     LinearLayout header_container = null;
+    LinearLayout header;
+
+    LinearLayout slidermenu = null;
+    ImageView slidermenu_hats = null;
+    ImageView slidermenu_shoes = null;
+    ImageView slidermenu_glasses = null;
+    ImageView slidermenu_bags = null;
+    ImageView slidermenu_cart = null;
+
+    boolean isMenuOpen;
 
     ScrollView scr = null;
     InputStream stream = null;
@@ -71,10 +83,22 @@ public class Category extends Activity {
         inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
         try{
-            LinearLayout header = (LinearLayout)inflater.inflate(R.layout.header, category_container, true);
+            header = (LinearLayout)inflater.inflate(R.layout.header, category_container, true);
+            slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
+            category_container.addView(slidermenu, 0);
         } catch(InflateException e){
             Log.e("Inflater error********", ""+e);
         }
+
+        /*
+        SET VIEWS
+         */
+
+        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
+        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
+        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
+        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
+        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
 
         header_container = (LinearLayout)findViewById(R.id.header_container);
 
@@ -93,6 +117,10 @@ public class Category extends Activity {
         num_glasses = (TextView)findViewById(R.id.header_glasses_num);
         num_bags = (TextView)findViewById(R.id.header_bags_num);
 
+        /*
+        END SET VIEWS
+         */
+
         Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
         Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
 
@@ -101,24 +129,30 @@ public class Category extends Activity {
             case "hats":
                 header_container.removeAllViews();
                 header_container.addView(header_hats);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
                 break;
             case "shoes":
                 header_container.removeAllViews();
                 header_container.addView(header_shoes);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_shoes));
                 break;
             case "glasses":
                 header_container.removeAllViews();
                 header_container.addView(header_glasses);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_glasses));
                 break;
             case "bags":
                 header_container.removeAllViews();
                 header_container.addView(header_bags);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_bags));
                 break;
             default:
                 header_container.removeAllViews();
                 header_container.addView(findViewById(R.id.header_home));
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.white));
                 break;
         }
+        //header_container.addView(slider_menu, 0);
 
         header_hats_title.setTypeface(roboto_bold);
         header_shoes_title.setTypeface(roboto_bold);
@@ -130,6 +164,25 @@ public class Category extends Activity {
         num_glasses.setTypeface(georgia);
         num_bags.setTypeface(georgia);
 
+         /*
+        SET HANDLER
+         */
+        slidermenu_hats.setOnClickListener(handler);
+        slidermenu_shoes.setOnClickListener(handler);
+        slidermenu_glasses.setOnClickListener(handler);
+        slidermenu_bags.setOnClickListener(handler);
+        slidermenu_cart.setOnClickListener(handler);
+        header_hats.setOnClickListener(handler);
+        header_shoes.setOnClickListener(handler);
+        header_glasses.setOnClickListener(handler);
+        header_bags.setOnClickListener(handler);
+        /*
+        END SET HANDLER
+         */
+
+        /*
+        OPEN XML STREAM AND PARSE CONTENT (cat from Bundle)
+         */
         try{
             switch(getCategory()){
                 case "hats":
@@ -152,7 +205,7 @@ public class Category extends Activity {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
             parser.setInput(stream, null);
 
-            header_container.addView(parseXml(parser));
+           header_container.addView(parseXml(parser));
             //scr.addView(header_container);
         } catch ( IOException|XmlPullParserException e ) {
             e.printStackTrace();
@@ -354,6 +407,10 @@ public class Category extends Activity {
         return scrollView;
     }
 
+    /*
+    TOOLS
+     */
+
     public static int dpFromPx(final Context context, final float px) {
         return Math.round(px / context.getResources().getDisplayMetrics().density);
     }
@@ -361,6 +418,60 @@ public class Category extends Activity {
     public static int pxFromDp(final Context context, final float dp) {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
+
+    public void expand(final View v){
+        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
+
+        v.getLayoutParams().height = 0;
+        v.setVisibility(View.VISIBLE);
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    public void collapse(final View v){
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if(interpolatedTime == 1){
+                    v.setVisibility(View.GONE);
+                }
+                else{
+                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    /*
+    END TOOLS
+     */
 
     /***************************
      * GETTERS / SETTERS
@@ -386,14 +497,74 @@ public class Category extends Activity {
         return productInfo[id];
     }
 
-    public void setRlId(int rlId){
-        this.rlId = rlId;
+    private void setIsMenuOpen(boolean b){
+        this.isMenuOpen = b;
     }
 
-    public int getRlId(){
-        return this.rlId;
+    private boolean getIsMenuOpen(){
+        return this.isMenuOpen;
     }
     /*****************
      * END GETTERS / SETTERS
+     */
+
+    /*
+    HANDLER
+     */
+    View.OnClickListener handler = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            if (v == slidermenu_hats){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "hats");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if (v == slidermenu_shoes){
+                Intent i = new Intent(getApplicationContext() , Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "shoes");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if (v == slidermenu_glasses){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "glasses");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if(v == slidermenu_bags){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "bags");
+                i.putExtras(b);
+                startActivity(i);
+                //finish();
+            }
+            else if(v == slidermenu_cart){
+                Intent i = new Intent(getApplicationContext(), Cart.class);
+                startActivity(i);
+            }
+            else if(v == header_hats || v == header_shoes || v == header_glasses || v == header_bags){
+                if(getIsMenuOpen() == true){
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    collapse(slidermenu);
+                    setIsMenuOpen(false);
+                }
+                else{
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    expand(slidermenu);
+                    setIsMenuOpen(true);
+                }
+            }
+        }
+    };
+    /*
+    END HANDLER
      */
 }

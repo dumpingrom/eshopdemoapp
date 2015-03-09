@@ -1,11 +1,20 @@
 package com.videodesk.eshopdemoapp;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +26,18 @@ public class MainActivity extends Activity {
     /*
     DECLARE VIEWS
      */
+    LinearLayout home_container = null;
+
+    LinearLayout slidermenu = null;
+    ImageView slidermenu_hats = null;
+    ImageView slidermenu_shoes = null;
+    ImageView slidermenu_glasses = null;
+    ImageView slidermenu_bags = null;
+    ImageView slidermenu_cart = null;
+
+    RelativeLayout header = null;
+
+    boolean isMenuOpen;
 
     RelativeLayout home_hats = null;
 
@@ -56,10 +77,29 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         /*
-        FIND VIEWS
+        PREPEND SLIDER MENU
+         */
+        home_container = (LinearLayout)findViewById(R.id.home_container);
+        slidermenu = (LinearLayout)getLayoutInflater().inflate(R.layout.slider_menu, null);
+        home_container.addView(slidermenu, 0);
+        /*
+        END PREPEND SLIDER MENU
          */
 
-        LinearLayout home_container = (LinearLayout)findViewById(R.id.home_container);
+
+        /*
+        SET VIEWS
+         */
+        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
+        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
+        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
+        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
+        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
+
+        setIsMenuOpen(false);
+
+        header = (RelativeLayout)findViewById(R.id.header);
+
 
         home_hats = (RelativeLayout) findViewById(R.id.home_hats);
         home_hats_img = (ImageView) findViewById(R.id.home_hats_img);
@@ -84,7 +124,7 @@ public class MainActivity extends Activity {
 
 
         /*
-        END FIND VIEWS
+        END SET VIEWS
          */
 
         /*
@@ -114,10 +154,23 @@ public class MainActivity extends Activity {
         home_shoes.setOnClickListener(handler);
         home_glasses.setOnClickListener(handler);
         home_bags.setOnClickListener(handler);
-
+        slidermenu_hats.setOnClickListener(handler);
+        slidermenu_shoes.setOnClickListener(handler);
+        slidermenu_glasses.setOnClickListener(handler);
+        slidermenu_bags.setOnClickListener(handler);
+        slidermenu_cart.setOnClickListener(handler);
+        header.setOnClickListener(handler);
 
         /*
         END SET HANDLERS
+         */
+
+        /*
+        MENU ANIMATION
+         */
+
+        /*
+        END MENU ANIMATION
          */
     }
 
@@ -127,7 +180,7 @@ public class MainActivity extends Activity {
     View.OnClickListener handler = new View.OnClickListener(){
         @Override
         public void onClick(View v){
-            if (v == home_hats){
+            if (v == home_hats || v == slidermenu_hats){
                 Intent i = new Intent(MainActivity.this , Category.class);
                 Bundle b = new Bundle();
                 b.putString("cat", "hats");
@@ -135,7 +188,7 @@ public class MainActivity extends Activity {
                 startActivity(i);
                 //finish();
             }
-            else if (v == home_shoes){
+            else if (v == home_shoes || v == slidermenu_shoes){
                 Intent i = new Intent(MainActivity.this , Category.class);
                 Bundle b = new Bundle();
                 b.putString("cat", "shoes");
@@ -143,7 +196,7 @@ public class MainActivity extends Activity {
                 startActivity(i);
                 //finish();
             }
-            else if (v == home_glasses){
+            else if (v == home_glasses || v == slidermenu_glasses){
                 Intent i = new Intent(MainActivity.this, Category.class);
                 Bundle b = new Bundle();
                 b.putString("cat", "glasses");
@@ -151,13 +204,29 @@ public class MainActivity extends Activity {
                 startActivity(i);
                 //finish();
             }
-            else if(v == home_bags){
+            else if(v == home_bags || v == slidermenu_bags){
                 Intent i = new Intent(MainActivity.this, Category.class);
                 Bundle b = new Bundle();
                 b.putString("cat", "bags");
                 i.putExtras(b);
                 startActivity(i);
                 //finish();
+            }
+            else if(v == slidermenu_cart){
+                Intent i = new Intent(MainActivity.this, Cart.class);
+                startActivity(i);
+            }
+            else if(v == header){
+                if(getIsMenuOpen() == true){
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    collapse(slidermenu);
+                    setIsMenuOpen(false);
+                }
+                else{
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    expand(slidermenu);
+                    setIsMenuOpen(true);
+                }
             }
         }
     };
@@ -188,10 +257,89 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }*/
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
 
         finish();
+    }*/
+    /*
+    TOOLS
+     */
+
+    public static int dpFromPx(final Context context, final float px) {
+        return Math.round(px / context.getResources().getDisplayMetrics().density);
     }
+
+    public static int pxFromDp(final Context context, final float dp) {
+        return Math.round(dp * context.getResources().getDisplayMetrics().density);
+    }
+
+    public void expand(final View v){
+        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
+
+        v.getLayoutParams().height = 0;
+        v.setVisibility(View.VISIBLE);
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    public void collapse(final View v){
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if(interpolatedTime == 1){
+                    v.setVisibility(View.GONE);
+                }
+                else{
+                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    /*
+    END TOOLS
+     */
+
+    /*
+    GET/SET
+     */
+    private void setIsMenuOpen(boolean b){
+        this.isMenuOpen = b;
+    }
+
+    private boolean getIsMenuOpen(){
+        return this.isMenuOpen;
+    }
+    /*
+    END GET/SET
+     */
 }
