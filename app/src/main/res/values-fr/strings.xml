@@ -20,6 +20,10 @@
     <string name="three">03</string>
     <string name="four">04</string>
 
+    <!--CART-->
+    <string name="cart_empty">Votre panier est vide :(</string>
+    <string name="cart_total">Total de vos achats :</string>
+
     <!-- Checkout -->
     <string name="goToCheckout">ALLER AU PAIEMENT</string>
 
@@ -44,7 +48,7 @@
     <string name="checkout_ccv">CCV</string>
     <string name="checkout_ccexpmonth">Mois d\'exp.</string>
     <string name="checkout_ccexpyear">Année d\'exp.</string>
-    <string name="checkout_submit">Procéder au paiement</string>
+    <string name="checkout_submit">VALIDER LE PAIEMENT</string>
 
     <string name="cctype">Type de carte de crédit</string>
     <string name="cctype1">VISA</string>

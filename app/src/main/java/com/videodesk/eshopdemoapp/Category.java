@@ -100,6 +100,7 @@ public class Category extends Activity {
         slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
         slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
 
+
         header_container = (LinearLayout)findViewById(R.id.header_container);
 
         header_hats = (LinearLayout)findViewById(R.id.header_hats);
@@ -384,6 +385,7 @@ public class Category extends Activity {
                                     b.putString("cat", getCategory());
                                     i.putExtras(b);
                                     startActivity(new Intent(getBaseContext(), Product.class).putExtras(b));
+                                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                                     //finish();
                                 }
                             });
@@ -411,6 +413,10 @@ public class Category extends Activity {
     TOOLS
      */
 
+    /*
+        slider menu animation
+     */
+
     public static int dpFromPx(final Context context, final float px) {
         return Math.round(px / context.getResources().getDisplayMetrics().density);
     }
@@ -430,7 +436,7 @@ public class Category extends Activity {
 
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
                 v.requestLayout();
             }
 
@@ -468,6 +474,9 @@ public class Category extends Activity {
         a.setDuration(500);
         v.startAnimation(a);
     }
+    /*
+        end slider menu animation
+     */
 
     /*
     END TOOLS
@@ -520,7 +529,8 @@ public class Category extends Activity {
                 b.putString("cat", "hats");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
             }
             else if (v == slidermenu_shoes){
                 Intent i = new Intent(getApplicationContext() , Category.class);
@@ -528,7 +538,8 @@ public class Category extends Activity {
                 b.putString("cat", "shoes");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
             }
             else if (v == slidermenu_glasses){
                 Intent i = new Intent(getApplicationContext(), Category.class);
@@ -536,7 +547,8 @@ public class Category extends Activity {
                 b.putString("cat", "glasses");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
             }
             else if(v == slidermenu_bags){
                 Intent i = new Intent(getApplicationContext(), Category.class);
@@ -544,13 +556,16 @@ public class Category extends Activity {
                 b.putString("cat", "bags");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
             }
             else if(v == slidermenu_cart){
                 Intent i = new Intent(getApplicationContext(), Cart.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
             }
-            else if(v == header_hats || v == header_shoes || v == header_glasses || v == header_bags){
+            else if(v.getParent() == header_container){
                 if(getIsMenuOpen() == true){
                     Log.d("isMenuOpen = ", ""+getIsMenuOpen());
                     collapse(slidermenu);
@@ -561,6 +576,11 @@ public class Category extends Activity {
                     expand(slidermenu);
                     setIsMenuOpen(true);
                 }
+            }
+
+            //must not finish activity on header click
+            if (v.getParent() == slidermenu){
+                finish();
             }
         }
     };

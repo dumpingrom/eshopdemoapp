@@ -103,12 +103,15 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_cart">
     <ScrollView
         android:id="@+id/cart_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header_cart">
+        android:paddingBottom="75dp">
 
         <LinearLayout
             android:id="@+id/cart_container"
@@ -117,15 +120,7 @@
             android:orientation="vertical">
             <!--Content generated from Cart.java-->
             </LinearLayout>
-
         </ScrollView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/cart_scroll"
-
-        >
         <Button
             android:id="@+id/tmp_button_checkout"
             android:layout_width="match_parent"
@@ -135,6 +130,6 @@
             android:background="@color/black"
             android:textColor="@color/white"
             android:textSize="20sp"
-            />
-        </RelativeLayout>
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 </LinearLayout>

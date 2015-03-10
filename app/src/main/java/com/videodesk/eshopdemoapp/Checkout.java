@@ -2,9 +2,13 @@ package com.videodesk.eshopdemoapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import static com.videodesk.eshopdemoapp.R.layout.checkout;
 
@@ -15,6 +19,10 @@ public class Checkout extends Activity {
 
     EditText co_fn, co_ln, co_email, co_ad1, co_ad2, co_ad3, co_city, co_zip, co_ccname,
             co_ccnumber, co_expm, co_expy;
+
+    Button submit;
+
+    LinearLayout header;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -49,6 +57,18 @@ public class Checkout extends Activity {
         imm.showSoftInput(co_expm, InputMethodManager.SHOW_IMPLICIT);
         imm.showSoftInput(co_expy, InputMethodManager.SHOW_IMPLICIT);
 
+        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
+        Typeface roboto_black = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf");
+
+        header = (LinearLayout)findViewById(R.id.header_checkout);
+        submit = (Button)findViewById(R.id.checkout_submit);
+
+        submit.setTypeface(roboto_bold);
+        for(int i = 0; i < header.getChildCount(); i++){
+            if(header.getChildAt(i) instanceof TextView){
+                ((TextView) header.getChildAt(i)).setTypeface(roboto_black);
+            }
+        }
 
     }
 }

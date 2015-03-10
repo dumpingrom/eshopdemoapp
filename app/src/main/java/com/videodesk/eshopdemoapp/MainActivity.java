@@ -11,6 +11,8 @@ import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.InflateException;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -80,7 +82,16 @@ public class MainActivity extends Activity {
         PREPEND SLIDER MENU
          */
         home_container = (LinearLayout)findViewById(R.id.home_container);
-        slidermenu = (LinearLayout)getLayoutInflater().inflate(R.layout.slider_menu, null);
+
+        LayoutInflater inflater;
+        inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        try{
+            slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
+        } catch(InflateException e){
+            Log.e("Inflater error********", ""+e);
+        }
+
         home_container.addView(slidermenu, 0);
         /*
         END PREPEND SLIDER MENU
@@ -186,6 +197,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "hats");
                 i.putExtras(b);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 //finish();
             }
             else if (v == home_shoes || v == slidermenu_shoes){
@@ -194,6 +206,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "shoes");
                 i.putExtras(b);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 //finish();
             }
             else if (v == home_glasses || v == slidermenu_glasses){
@@ -202,6 +215,7 @@ public class MainActivity extends Activity {
                 b.putString("cat", "glasses");
                 i.putExtras(b);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 //finish();
             }
             else if(v == home_bags || v == slidermenu_bags){
@@ -210,11 +224,13 @@ public class MainActivity extends Activity {
                 b.putString("cat", "bags");
                 i.putExtras(b);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 //finish();
             }
             else if(v == slidermenu_cart){
                 Intent i = new Intent(MainActivity.this, Cart.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if(v == header){
                 if(getIsMenuOpen() == true){
@@ -275,6 +291,9 @@ public class MainActivity extends Activity {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
 
+    /*
+        slider menu animation
+     */
     public void expand(final View v){
         v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
@@ -286,7 +305,7 @@ public class MainActivity extends Activity {
 
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
                 v.requestLayout();
             }
 
@@ -324,7 +343,9 @@ public class MainActivity extends Activity {
         a.setDuration(500);
         v.startAnimation(a);
     }
-
+    /*
+        end slider menu animation
+     */
     /*
     END TOOLS
      */

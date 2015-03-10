@@ -13,6 +13,8 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +30,17 @@ import java.util.List;
  * Created by romain@videodesk on 03/03/15.
  */
 public class Product extends Activity {
+    LinearLayout slidermenu = null;
+    ImageView slidermenu_hats = null;
+    ImageView slidermenu_shoes = null;
+    ImageView slidermenu_glasses = null;
+    ImageView slidermenu_bags = null;
+    ImageView slidermenu_cart = null;
+
+    boolean isMenuOpen;
+
     LinearLayout header_container = null;
+    LinearLayout header;
 
     LinearLayout header_hats = null;
     LinearLayout header_shoes = null;
@@ -64,10 +76,16 @@ public class Product extends Activity {
         inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
         try{
-            LinearLayout header = (LinearLayout)inflater.inflate(R.layout.header, product_container, true);
+            header = (LinearLayout)inflater.inflate(R.layout.header, product_container, true);
+            slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
+            product_container.addView(slidermenu, 0);
         } catch(InflateException e){
             Log.e("Inflater error********", ""+e);
         }
+
+        /*SET VIEWS
+
+         */
 
         header_container = (LinearLayout)findViewById(R.id.header_container);
 
@@ -86,26 +104,60 @@ public class Product extends Activity {
         num_glasses = (TextView)findViewById(R.id.header_glasses_num);
         num_bags = (TextView)findViewById(R.id.header_bags_num);
 
+        /*
+        END SET VIEWS
+         */
+
+        /*
+        SLIDER MENU
+         */
+
+        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
+        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
+        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
+        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
+        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
+        slidermenu_hats.setOnClickListener(handler);
+        slidermenu_shoes.setOnClickListener(handler);
+        slidermenu_glasses.setOnClickListener(handler);
+        slidermenu_bags.setOnClickListener(handler);
+        slidermenu_cart.setOnClickListener(handler);
+        header.setOnClickListener(handler);
+
+
+        setIsMenuOpen(false);
+
+        /*
+        END SLIDER MENU
+         */
+
         Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
         Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
 
-
+        /*
+        TODO
+        Simplify header generation (set text + bg-col + num...)
+         */
         switch (getCategory()){
             case "hats":
                 header_container.removeAllViews();
                 header_container.addView(header_hats);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
                 break;
             case "shoes":
                 header_container.removeAllViews();
                 header_container.addView(header_shoes);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_shoes));
                 break;
             case "glasses":
                 header_container.removeAllViews();
                 header_container.addView(header_glasses);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_glasses));
                 break;
             case "bags":
                 header_container.removeAllViews();
                 header_container.addView(header_bags);
+                slidermenu.setBackgroundColor(getResources().getColor(R.color.color_bags));
                 break;
             default:
                 header_container.addView(findViewById(R.id.header_home));
@@ -233,16 +285,11 @@ public class Product extends Activity {
                 DataHolder.getInstance().setCart(getProduct());
                 //ADD INTENT HERE
 
-                /*for (int i = 0; i<DataHolder.getInstance().getCart().size(); i++){
-                    for (int j = 0; j < DataHolder.getInstance().getProduct(i).length; j++){
-                        Log.d("PRODUCT ADDED*********", DataHolder.getInstance().getProduct(i)[j]);
-                    }
-                    Log.d("DEBUG********", "String[] length = "+DataHolder.getInstance().getProduct(i).length);
-                }*/
                 Toast.makeText(getApplicationContext(), getProductInfo(0) + " has been added to your cart!", Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(Product.this, Cart.class);
+                /*Intent intent = new Intent(Product.this, Cart.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);*/
                 finish();
             }
         });
@@ -293,6 +340,56 @@ public class Product extends Activity {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
 
+    public void expand(final View v){
+        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
+
+        v.getLayoutParams().height = 0;
+        v.setVisibility(View.VISIBLE);
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
+    public void collapse(final View v){
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if(interpolatedTime == 1){
+                    v.setVisibility(View.GONE);
+                }
+                else{
+                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        a.setDuration(500);
+        v.startAnimation(a);
+    }
+
     /*
     END TOOLS
      */
@@ -318,7 +415,86 @@ public class Product extends Activity {
         return category;
     }
 
+    private void setIsMenuOpen(boolean b){
+        this.isMenuOpen = b;
+    }
+
+    private boolean getIsMenuOpen(){
+        return this.isMenuOpen;
+    }
+
+
     /*
     END GETTERS / SETTERS
+     */
+
+    /*
+    HANDLER
+     */
+    View.OnClickListener handler = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            if (v == slidermenu_hats){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "hats");
+                i.putExtras(b);
+                startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
+            }
+            else if (v == slidermenu_shoes){
+                Intent i = new Intent(getApplicationContext() , Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "shoes");
+                i.putExtras(b);
+                startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
+            }
+            else if (v == slidermenu_glasses){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "glasses");
+                i.putExtras(b);
+                startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
+            }
+            else if(v == slidermenu_bags){
+                Intent i = new Intent(getApplicationContext(), Category.class);
+                Bundle b = new Bundle();
+                b.putString("cat", "bags");
+                i.putExtras(b);
+                startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                finish();
+            }
+            else if(v == slidermenu_cart){
+                Intent i = new Intent(getApplicationContext(), Cart.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+            }
+            else if(v == header){
+                if(getIsMenuOpen() == true){
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    collapse(slidermenu);
+                    setIsMenuOpen(false);
+                }
+                else{
+                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    expand(slidermenu);
+                    setIsMenuOpen(true);
+                }
+            }
+
+            //must not finish activity on header click
+            if (v.getParent() == slidermenu){
+                finish();
+            }
+        }
+    };
+    /*
+    END HANDLER
      */
 }

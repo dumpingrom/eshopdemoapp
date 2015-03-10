@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,19 +44,27 @@ public class Cart extends Activity {
 
     boolean isMenuOpen;
 
+    int totalPrice = 0;
+
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
-
-        slidermenu = (LinearLayout)getLayoutInflater().inflate(R.layout.slider_menu, null);
-        slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
-        header = (RelativeLayout)findViewById(R.id.header);
         cart = (LinearLayout)findViewById(R.id.cart);
         cartContainer = (LinearLayout) findViewById(R.id.cart_container);
         headerCartTitle = (TextView)findViewById(R.id.header_cart_title);
 
-        cart.addView(slidermenu, 0);
+        LayoutInflater inflater;
+        inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        try{
+            slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
+            cart.addView(slidermenu, 0);
+        } catch(InflateException e){
+            Log.e("Inflater error********", ""+e);
+        }
+        slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
+        header = (RelativeLayout)findViewById(R.id.header);
 
 
         /*
@@ -100,7 +109,7 @@ public class Cart extends Activity {
 
             //CREATE TEXT VIEW FOR EMPTY CART
             TextView emptyCartTxt = new TextView(this);
-            emptyCartTxt.setText("Your shopping cart is empty... :(");
+            emptyCartTxt.setText(getResources().getText(R.string.cart_empty));
             RelativeLayout.LayoutParams emptyCartTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             emptyCartTxtParams.setMargins(0, 0, 0, 0);
             emptyCartTxtParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
@@ -123,6 +132,41 @@ public class Cart extends Activity {
                 //Log.d("DEBUG********", "String[] length = "+DataHolder.getInstance().getProduct(i).length);
                 cartContainer.addView(cartItem(i));
             }
+
+            /*
+            TOTAL PRICE VIEW
+             */
+            //CREATE RELATIVE LAYOUT CONTAINER
+            RelativeLayout totalPriceLayout = new RelativeLayout(this);
+            LinearLayout.LayoutParams totalPriceLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            totalPriceLayoutParams.setMargins(pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20));
+            totalPriceLayout.setLayoutParams(totalPriceLayoutParams);
+            totalPriceLayout.setPadding(pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20));
+            totalPriceLayout.setBackgroundColor(Color.WHITE);
+
+            //CREATE TEXT VIEW FOR EMPTY CART
+            TextView totalPriceTxt = new TextView(this);
+            totalPriceTxt.setText(getResources().getText(R.string.cart_total)+" $"+getTotalPrice());
+            RelativeLayout.LayoutParams totalPriceTxtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            totalPriceTxtParams.setMargins(0, 0, 0, 0);
+            totalPriceTxtParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            totalPriceTxtParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+            totalPriceTxt.setLayoutParams(totalPriceTxtParams);
+            totalPriceTxt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Regular.ttf"));
+            totalPriceTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            totalPriceTxt.setTextColor(Color.BLACK);
+            totalPriceTxt.setId(View.generateViewId());
+
+            //ADD TEXT VIEW TO RELATIVE LAYOUT
+            totalPriceLayout.addView(totalPriceTxt);
+
+            //ADD RELATIVE LAYOUT TO MAIN VIEW (cartContainer)
+            cartContainer.addView(totalPriceLayout);
+            /*
+            END TOTAL PRICE VIEW
+             */
+
+
             tmp_checkout_btn = (Button) findViewById(R.id.tmp_button_checkout);
             tmp_checkout_btn.setTypeface(roboto_black);
 
@@ -131,6 +175,7 @@ public class Cart extends Activity {
                 public void onClick(View v) {
                     Intent intent = new Intent(Cart.this, Checkout.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 }
             });
         }
@@ -187,6 +232,8 @@ public class Cart extends Activity {
                     //
                     break;
                 case 3://price
+                    setTotalPrice(Integer.parseInt(DataHolder.getInstance().getProduct(i)[j]));
+
                     price = new TextView(this);
                     price.setText("$ "+DataHolder.getInstance().getProduct(i)[j]);
                     RelativeLayout.LayoutParams priceParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -214,6 +261,7 @@ public class Cart extends Activity {
 
                     RelativeLayout.LayoutParams imgParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     imgParams.width = pxFromDp(this, 75);
+                    imgParams.height = pxFromDp(this, 75);
                     imgParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
                     imgParams.setMarginStart(10);
 
@@ -233,7 +281,7 @@ public class Cart extends Activity {
             trash.setScaleType(ImageView.ScaleType.FIT_CENTER);
             trash.setId(View.generateViewId());
 
-            RelativeLayout.LayoutParams trashParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams trashParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             trashParams.width = pxFromDp(this, 30);
             trashParams.setMargins(0,0,pxFromDp(this, 10),0);
             trashParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
@@ -250,6 +298,7 @@ public class Cart extends Activity {
                     DataHolder.getInstance().removeFromCart(toRemove);
                     Intent intent = getIntent();
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                     finish();
                 }
             });
@@ -258,8 +307,14 @@ public class Cart extends Activity {
             //Log.d("Product Cart*********", "Adding trash icon as View #"+trash.getId());
         }
 
+        /*
+        ADD TOTAL PRICE TEXTVIEW
+         */
+
+
+
         //Log.d("PRODUCT IN CART******", "Displaying Product "+DataHolder.getInstance().getProduct(i)[0]+" in Cart");
-        LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rlp.setMargins(pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20));
         rl.setLayoutParams(rlp);
         rl.setPadding(10,10,10,10);
@@ -299,7 +354,7 @@ public class Cart extends Activity {
 
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ? LinearLayout.LayoutParams.WRAP_CONTENT : (int)(targetHeight*interpolatedTime);
+                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
                 v.requestLayout();
             }
 
@@ -357,7 +412,7 @@ public class Cart extends Activity {
                 b.putString("cat", "hats");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if (v == slidermenu_shoes){
                 Intent i = new Intent(getApplicationContext() , Category.class);
@@ -365,7 +420,7 @@ public class Cart extends Activity {
                 b.putString("cat", "shoes");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if (v == slidermenu_glasses){
                 Intent i = new Intent(getApplicationContext(), Category.class);
@@ -373,7 +428,7 @@ public class Cart extends Activity {
                 b.putString("cat", "glasses");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if(v == slidermenu_bags){
                 Intent i = new Intent(getApplicationContext(), Category.class);
@@ -381,11 +436,12 @@ public class Cart extends Activity {
                 b.putString("cat", "bags");
                 i.putExtras(b);
                 startActivity(i);
-                //finish();
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if(v == slidermenu_cart){
                 Intent i = new Intent(getApplicationContext(), Cart.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
             else if(v == header){
                 if(getIsMenuOpen() == true){
@@ -398,6 +454,11 @@ public class Cart extends Activity {
                     expand(slidermenu);
                     setIsMenuOpen(true);
                 }
+            }
+
+            //must not finish activity on header click
+            if (v.getParent() == slidermenu){
+                finish();
             }
         }
     };
@@ -415,6 +476,10 @@ public class Cart extends Activity {
     private boolean getIsMenuOpen(){
         return this.isMenuOpen;
     }
+
+    private int getTotalPrice(){ return this.totalPrice; }
+
+    private void setTotalPrice(int price){ this.totalPrice = this.totalPrice + price; }
     /*
     END GET/SET
      */

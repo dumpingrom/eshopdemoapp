@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/slidermenu"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:visibility="gone"
-    android:gravity="center"
-    android:weightSum="100"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:gravity="center">
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_hats"
         android:id="@+id/slidemenu_hats"
         android:padding="10dp"
-        android:layout_weight="20"/>
+        android:layout_weight="1"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"/>
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_shoes"
         android:id="@+id/slidemenu_shoes"
         android:padding="10dp"
-        android:layout_weight="20"/>
+        android:layout_weight="1"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"/>
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_glasses"
         android:id="@+id/slidemenu_glasses"
         android:padding="10dp"
-        android:layout_weight="20"/>
+        android:layout_weight="1"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"/>
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_bags"
         android:id="@+id/slidemenu_bags"
         android:padding="10dp"
-        android:layout_weight="20"/>
+        android:layout_weight="1"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"/>
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_cart"
         android:id="@+id/slidemenu_cart"
         android:padding="10dp"
-        android:layout_weight="20"/>
+        android:layout_weight="1"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"/>
 </LinearLayout>
