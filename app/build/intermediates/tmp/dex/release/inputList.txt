@@ -1,5 +1,0 @@
-/home/videodesk/AndroidStudioProjects/EshopDemoApp/app/build/intermediates/classes/release
-/home/videodesk/AndroidStudioProjects/EshopDemoApp/app/build/intermediates/pre-dexed/release/support-annotations-21.0.3-70ec6b690ecd063242d9c5efae8818e42a44dc78.jar
-/home/videodesk/AndroidStudioProjects/EshopDemoApp/app/build/intermediates/pre-dexed/release/internal_impl-21.0.3-267294af0fa4ca47929f01e707172925b0f6725f.jar
-/home/videodesk/AndroidStudioProjects/EshopDemoApp/app/build/intermediates/pre-dexed/release/classes-209b63f9333aafd01cdabc843aad85910ae63ae8.jar
-/home/videodesk/AndroidStudioProjects/EshopDemoApp/app/build/intermediates/pre-dexed/release/classes-75f342afdcad744b9a7b1fd42e7c51713872ccf3.jar
