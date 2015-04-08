@@ -1,0 +1,6 @@
+color palette
+#000000 black 
+#7bcece blue-green
+#31c6ef blue
+#ef4a5a red
+#f7ce5a yellow
