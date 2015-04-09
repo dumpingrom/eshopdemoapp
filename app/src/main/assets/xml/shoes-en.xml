@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<products>
+	<product>
+		<name>White sport shoes</name>
+		<description>Wanna play Tennis ?</description>
+		<long><![CDATA[Tennis is a racquet sport that can be played individually against a single opponent (singles) or between two teams of two players each (doubles). Each player uses a racquet that is strung with cord to strike a hollow rubber ball covered with felt over or around a net and into the opponent's court. The object of the game is to play the ball in such a way that the opponent is not able to play a good return.]]></long>
+		<price>200</price>
+		<image>product_shoes_01</image>
+	</product>
+	<product>
+		<name>Navy shoes</name>
+		<description>Yes, you can sail the seven seas</description>
+		<long><![CDATA[Where can you find pleasure
+Search the world for treasure
+Learn science technology
+Where can you begin to make your dreams all come true
+On the land or on the sea
+Where can you learn to fly
+Play in sports and skin dive
+Study oceanography
+Sign up for the big band
+Or sit in the grandstand
+When your team and others meet]]></long>
+		<price>250</price>
+		<image>product_shoes_02</image>
+	</product>
+	<product>
+		<name>Plain blue shoes</name>
+		<description>The color of this shoe have been Photoshopped</description>
+		<long><![CDATA[These are plain blue shoes made of textile and rubber.
+Textile is above, rubber is below.]]></long>
+		<price>250</price>
+		<image>product_shoes_03</image>
+	</product>
+	<product>
+		<name>Boat Shoes</name>
+		<description>Seriously, I do not have anymore inspiration</description>
+		<long><![CDATA[I have been writing those legends for a while now, and seriously, I hope that this is the last one]]></long>
+		<price>275</price>
+		<image>product_shoes_04</image>
+	</product>
+</products>

@@ -4,7 +4,7 @@
 	<product>
 		<name>Le Pliage Tote Bag</name>
 		<description>Longchamp</description>
-        <long><![CDATA[Tote bag
+		<long><![CDATA[Tote bag
 Tubular dual carry handles
 Top zip closure with leather fold-over flap at center and logo snap-button closure
 Gold-tone hardware
@@ -19,7 +19,7 @@ Origin: France]]></long>
 	<product>
 		<name>Le Pliage XL bag</name>
 		<description>Longchamp</description>
-        <long><![CDATA[Large travel bag
+		<long><![CDATA[Large travel bag
 Tubular double handles
 Top zip closure with leather fold-over flap at center and logo snap-button closure
 Gold-tone hardware
@@ -31,10 +31,10 @@ Origin: Imported]]></long>
 		<price>155</price>
 		<image>product_bags_02</image>
 	</product>
-    <product>
-        <name>Monogram Keepall 45</name>
-        <description>Louis Vuitton</description>
-        <long><![CDATA[This monogram canvas weekender bag features allover signature monogram design with contrast leather trim details
+	<product>
+		<name>Monogram Keepall 45</name>
+		<description>Louis Vuitton</description>
+		<long><![CDATA[This monogram canvas weekender bag features allover signature monogram design with contrast leather trim details
 
 Double rolled carry handles with hardware accents
 Top zip closure
@@ -45,7 +45,7 @@ Flat bottom design
 Material: Monogram canvas body, textile lining
 Approx. measurements: 10.6" x 17.7" x 7.9", handle drop 5"
 Origin: Made in France]]></long>
-        <price>1000</price>
-        <image>product_bags_03</image>
-    </product>
+		<price>1000</price>
+		<image>product_bags_03</image>
+	</product>
 </products>
