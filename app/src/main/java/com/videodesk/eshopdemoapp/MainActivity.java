@@ -279,6 +279,7 @@ public class MainActivity extends Activity {
 
         finish();
     }*/
+
     /*
     TOOLS
      */
@@ -292,7 +293,7 @@ public class MainActivity extends Activity {
     }
 
     /*
-        slider menu animation
+        SLIDER TOP MENU ANIMATION
      */
     public void expand(final View v){
         v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -344,7 +345,7 @@ public class MainActivity extends Activity {
         v.startAnimation(a);
     }
     /*
-        end slider menu animation
+        END SLIDER MENU ANIMATION
      */
     /*
     END TOOLS

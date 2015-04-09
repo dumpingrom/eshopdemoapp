@@ -153,7 +153,6 @@ public class Category extends Activity {
                 slidermenu.setBackgroundColor(getResources().getColor(R.color.white));
                 break;
         }
-        //header_container.addView(slider_menu, 0);
 
         header_hats_title.setTypeface(roboto_bold);
         header_shoes_title.setTypeface(roboto_bold);
@@ -185,21 +184,22 @@ public class Category extends Activity {
         OPEN XML STREAM AND PARSE CONTENT (cat from Bundle)
          */
         try{
+            String lang = getResources().getConfiguration().locale.getLanguage();
             switch(getCategory()){
                 case "hats":
-                    stream = getApplicationContext().getAssets().open("xml/hats.xml");
+                    stream = getApplicationContext().getAssets().open("xml/hats-"+lang+".xml");
                     break;
                 case "shoes":
-                    stream = getApplicationContext().getAssets().open("xml/hats.xml");
+                    stream = getApplicationContext().getAssets().open("xml/hats-"+lang+".xml");
                     break;
                 case "glasses":
-                    stream = getApplicationContext().getAssets().open("xml/glasses.xml");
+                    stream = getApplicationContext().getAssets().open("xml/glasses-"+lang+".xml");
                     break;
                 case "bags":
-                    stream = getApplicationContext().getAssets().open("xml/bags.xml");
+                    stream = getApplicationContext().getAssets().open("xml/bags-"+lang+".xml");
                     break;
             }
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParserFactory factory;
             factory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = factory.newPullParser();
 
@@ -258,7 +258,7 @@ public class Category extends Activity {
                         rl.setPadding(10,10,10,10);
 
                         rl.setId(rlId);
-                        Log.d("SETID*************", "Just created Relative Layout with id"+rlId);
+                        //Log.d("SETID*************", "Just created Relative Layout with id"+rlId);
                         rlId++;
                     }
                     previousText = xpp.getName();
@@ -270,7 +270,7 @@ public class Category extends Activity {
                             case "name":
                                 //Log.d("log", "Product name: "+xpp.getText());
                                 setStringBundle(rl.getId(), 0, xpp.getText());
-                                Log.d("Bundle", "Set productInfo["+rl.getId()+"][0] to: "+getString(rl.getId(), 0));
+                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][0] to: "+getString(rl.getId(), 0));
 
                                 title = new TextView(this);
                                 title.setText(xpp.getText());
@@ -290,7 +290,7 @@ public class Category extends Activity {
                             case "description":
                                 //Log.d("log", "Product description: "+xpp.getText());
                                 setStringBundle(rl.getId(), 1, xpp.getText());
-                                Log.d("Bundle", "Set productInfo["+rl.getId()+"][1] to: "+getString(rl.getId(), 1));
+                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][1] to: "+getString(rl.getId(), 1));
 
                                 description = new TextView(this);
 
@@ -311,12 +311,12 @@ public class Category extends Activity {
                                 break;
                             case "long":
                                 setStringBundle(rl.getId(), 2, xpp.getText());
-                                Log.d("Bundle", "Set productInfo["+rl.getId()+"][2] to: "+getString(rl.getId(), 2));
+                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][2] to: "+getString(rl.getId(), 2));
                                 break;
                             case "price":
                                 //Log.d("log", "Product price: "+xpp.getText());
                                 setStringBundle(rl.getId(), 3, xpp.getText());
-                                Log.d("Bundle", "Set productInfo["+rl.getId()+"][3] to: "+getString(rl.getId(), 3));
+                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][3] to: "+getString(rl.getId(), 3));
 
                                 price = new TextView(this);
                                 price.setText("$ "+xpp.getText());
@@ -327,7 +327,7 @@ public class Category extends Activity {
                                 RelativeLayout.LayoutParams priceParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                                 if(description != null){
-                                    priceParams.setMargins(pxFromDp(this, 150), pxFromDp(this, 20), 0, 0);
+                                    priceParams.setMargins(pxFromDp(this, 150), pxFromDp(this, 20), 0, pxFromDp(this, 10));
                                     priceParams.addRule(RelativeLayout.BELOW, description.getId());
                                 }
 
@@ -341,7 +341,7 @@ public class Category extends Activity {
                             case "image":
                                 //Log.d("log", "Product image URL: "+xpp.getText());
                                 setStringBundle(rl.getId(), 4, xpp.getText());
-                                Log.d("Bundle", "Set productInfo["+rl.getId()+"][4] to: "+getString(rl.getId(), 4));
+                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][4] to: "+getString(rl.getId(), 4));
 
                                 String imgUrl = xpp.getText();
 
@@ -378,7 +378,7 @@ public class Category extends Activity {
                                             id = i;
                                         }
                                     }
-                                    Log.d("RL ID******************", "id =" + id);
+                                    //Log.d("RL ID******************", "id =" + id);
                                     Intent i = new Intent(Category.this, Product.class);
                                     Bundle b = new Bundle();
                                     b.putStringArray("productInfo", getStringBundle(id));//must not use 0 as an id
@@ -567,12 +567,12 @@ public class Category extends Activity {
             }
             else if(v.getParent() == header_container){
                 if(getIsMenuOpen() == true){
-                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    //Log.d("isMenuOpen = ", ""+getIsMenuOpen());
                     collapse(slidermenu);
                     setIsMenuOpen(false);
                 }
                 else{
-                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
+                    //Log.d("isMenuOpen = ", ""+getIsMenuOpen());
                     expand(slidermenu);
                     setIsMenuOpen(true);
                 }

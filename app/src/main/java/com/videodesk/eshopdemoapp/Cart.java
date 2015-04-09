@@ -211,7 +211,7 @@ public class Cart extends Activity {
                     title.setId(View.generateViewId());
 
                     rl.addView(title);
-                    Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+title.getId());
+                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+title.getId());
                     break;
                 case 1://short
                     /*TextView shortDesc = new TextView(this);
@@ -250,7 +250,7 @@ public class Cart extends Activity {
                     price.setId(View.generateViewId());
 
                     rl.addView(price);
-                    Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+price.getId());
+                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+price.getId());
                     break;
                 case 4://image
                     img = new ImageView(this);
@@ -268,7 +268,7 @@ public class Cart extends Activity {
                     img.setLayoutParams(imgParams);
 
                     rl.addView(img);
-                    Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+img.getId());
+                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+img.getId());
                     break;
                 default:
                     //
