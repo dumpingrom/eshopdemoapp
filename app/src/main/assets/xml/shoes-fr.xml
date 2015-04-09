@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<products>
+	<product>
+		<name>Chaussures de sport blanches</name>
+		<description>Et si on se faisait un petit tennis ?</description>
+		<long><![CDATA[Le tennis est un sport de raquette qui oppose soit deux joueurs (on parle alors de jeu en simple) soit quatre joueurs qui forment deux équipes de deux (on parle alors de jeu en double). Les joueurs utilisent une raquette cordée verticalement et horizontalement à une tension variant avec la puissance ou l'effet que l'on veut obtenir. Cette raquette, dont les matériaux peuvent varier, sert à frapper une balle en caoutchouc, remplie d'air et recouverte de feutre. Le but du jeu est de frapper la balle de telle sorte que l'adversaire ne puisse la remettre dans les limites du terrain, soit en marquant le point en mettant l'adversaire hors de portée de la balle, soit en l'obligeant à commettre une faute (si sa balle ne retombe pas dans les limites du court, ou si elle ne passe pas le filet).]]></long>
+		<price>200</price>
+		<image>product_shoes_01</image>
+	</product>
+	<product>
+		<name>Chaussures Navy</name>
+		<description>Yes, you can sail the seven seas.</description>
+		<long><![CDATA[Where can you find pleasure
+Search the world for treasure
+Learn science technology
+Where can you begin to make your dreams all come true
+On the land or on the sea
+Where can you learn to fly
+Play in sports and skin dive
+Study oceanography
+Sign up for the big band
+Or sit in the grandstand
+When your team and others meet]]></long>
+		<price>250</price>
+		<image>product_shoes_02</image>
+	</product>
+	<product>
+		<name>Chaussures bleues classiques</name>
+		<description>La couleur de cette paire a été Photoshoppée.</description>
+		<long><![CDATA[Ce sont des chaussures tout ce qu'il y a de plus banal composées de gomme et de tissu.
+Le tissu est au-dessus, la gomme dessous.]]></long>
+		<price>250</price>
+		<image>product_shoes_03</image>
+	</product>
+	<product>
+		<name>Chaussures bateau</name>
+		<description>Je suis en manque d'inspiration.</description>
+		<long><![CDATA[Ça en fait des petites légendes à écrire, et des petits textes pour habiller l'application. Pour cette dernière légende, j'essaie d'écrire un texte bateau.]]></long>
+		<price>275</price>
+		<image>product_shoes_04</image>
+	</product>
+</products>
