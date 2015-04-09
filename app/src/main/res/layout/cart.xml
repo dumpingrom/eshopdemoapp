@@ -22,39 +22,16 @@
             android:gravity="center_vertical"
             android:id="@+id/header">
 
-            <LinearLayout
-                android:layout_width="30dp"
+            <ImageView
+                android:id="@+id/header_menu_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="30dp"
-                    android:layout_height="5dp"
-                    android:background="@color/black">
-                    <!--DUMMY-->
-                    </LinearLayout>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="30dp"
-                    android:layout_height="5dp"
-                    android:background="@color/black"
-                    android:layout_marginTop="3dp">
-                    <!--DUMMY-->
-                    </LinearLayout>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="30dp"
-                    android:layout_height="5dp"
-                    android:background="@color/black"
-                    android:layout_marginTop="3dp">
-                    <!--DUMMY-->
-                    </LinearLayout>
-            </LinearLayout>
+                android:src="@drawable/ic_menu"
+                android:layout_alignParentEnd="true"
+                android:padding="7dp"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/shop"
                 android:gravity="center"
                 android:textColor="@color/black"

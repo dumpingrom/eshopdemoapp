@@ -24,14 +24,15 @@ import android.widget.Toast;
 /**
  * Created by romain@videodesk on 04/03/15.
  */
-public class Cart extends Activity {
+public class Cart extends VdActivity {
     LinearLayout cart;
 
     LinearLayout cartContainer;
 
+    ImageView header_menu_icon;
+
     Button tmp_checkout_btn = null;
 
-    LinearLayout menu_button;
     LinearLayout slidermenu;
     ImageView slidermenu_hats;
     ImageView slidermenu_shoes;
@@ -65,6 +66,7 @@ public class Cart extends Activity {
         }
         slidermenu.setBackgroundColor(getResources().getColor(R.color.color_hats));
         header = (RelativeLayout)findViewById(R.id.header);
+        header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
 
 
         /*
@@ -81,7 +83,7 @@ public class Cart extends Activity {
         slidermenu_glasses.setOnClickListener(handler);
         slidermenu_bags.setOnClickListener(handler);
         slidermenu_cart.setOnClickListener(handler);
-        header.setOnClickListener(handler);
+        header_menu_icon.setOnClickListener(handler);
 
 
         setIsMenuOpen(false);
@@ -322,83 +324,6 @@ public class Cart extends Activity {
         return rl;
     }
 
-    /*
-    TOOLS
-     */
-
-    /*
-        unit conversion
-     */
-    public static int dpFromPx(final Context context, final float px) {
-        return Math.round(px / context.getResources().getDisplayMetrics().density);
-    }
-
-    public static int pxFromDp(final Context context, final float dp) {
-        return Math.round(dp * context.getResources().getDisplayMetrics().density);
-    }
-    /*
-        end unit conversion
-     */
-
-    /*
-        slider menu animations
-     */
-    public void expand(final View v){
-        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
-
-        v.getLayoutParams().height = 0;
-        v.setVisibility(View.VISIBLE);
-
-        Animation a = new Animation() {
-
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
-                v.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(500);
-        v.startAnimation(a);
-    }
-
-    public void collapse(final View v){
-        final int initialHeight = v.getMeasuredHeight();
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
-                    v.setVisibility(View.GONE);
-                }
-                else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
-                    v.requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(500);
-        v.startAnimation(a);
-    }
-    /*
-       end slider menu animations
-     */
-
-    /*
-    END TOOLS
-     */
 
     /*
     HANDLER
@@ -443,17 +368,8 @@ public class Cart extends Activity {
                 startActivity(i);
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
-            else if(v == header){
-                if(getIsMenuOpen() == true){
-                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
-                    collapse(slidermenu);
-                    setIsMenuOpen(false);
-                }
-                else{
-                    Log.d("isMenuOpen = ", ""+getIsMenuOpen());
-                    expand(slidermenu);
-                    setIsMenuOpen(true);
-                }
+            else if(v == header_menu_icon){
+                launchMenuAnimation(slidermenu);
             }
 
             //must not finish activity on header click
@@ -469,13 +385,6 @@ public class Cart extends Activity {
     /*
    GET/SET
     */
-    private void setIsMenuOpen(boolean b){
-        this.isMenuOpen = b;
-    }
-
-    private boolean getIsMenuOpen(){
-        return this.isMenuOpen;
-    }
 
     private int getTotalPrice(){ return this.totalPrice; }
 

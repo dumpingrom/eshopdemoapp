@@ -27,7 +27,7 @@
     <!-- Checkout -->
     <string name="goToCheckout">ALLER AU PAIEMENT</string>
 
-    <string name="payment"><b>° </b>PAIEMENT<b> °</b></string>
+    <string name="payment"> PAIEMENT</string>
 
     <string name="checkout_identity">Veuillez entrer vos informations d\'identité</string>
     <string name="checkout_firstname">Prénom</string>
@@ -36,8 +36,8 @@
 
     <string name="checkout_delivery">Veuillez entrer votre adresse de livraison</string>
     <string name="checkout_address1">Adresse ligne 1</string>
-    <string name="checkout_address2">Adress ligne 2</string>
-    <string name="checkout_address3">Adress ligne 3</string>
+    <string name="checkout_address2">Adresse ligne 2</string>
+    <string name="checkout_address3">Adresse ligne 3</string>
     <string name="checkout_city">Ville</string>
     <string name="checkout_zipcode">Code postal</string>
 

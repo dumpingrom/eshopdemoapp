@@ -18,6 +18,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".VdActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
             android:name=".Checkout"
             android:label="@string/app_name"
             android:allowTaskReparenting="true">

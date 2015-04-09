@@ -27,7 +27,7 @@
     <!-- Checkout -->
     <string name="goToCheckout">GO TO CHECKOUT PAGE</string>
 
-    <string name="payment"><b>° </b>PAYMENT<b> °</b></string>
+    <string name="payment"> PAYMENT</string>
 
     <string name="checkout_identity">Please enter your identity information.</string>
     <string name="checkout_firstname">First Name</string>
