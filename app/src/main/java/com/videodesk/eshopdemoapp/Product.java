@@ -190,12 +190,14 @@ public class Product extends Activity {
         img.setImageResource(drawableId);
         img.setScaleType(ImageView.ScaleType.FIT_CENTER);
         img.setId(View.generateViewId());
+        img.setPadding(dpFromPx(this, 50),dpFromPx(this, 50),dpFromPx(this, 50),dpFromPx(this, 50));
+        //img.setMaxHeight();
 
-        LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        imgParams.width = pxFromDp(this, 220);
-        imgParams.height = pxFromDp(this,120);
+        LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, pxFromDp(this, 350));
+        //imgParams.width = pxFromDp(this, 220);
+        //imgParams.height = pxFromDp(this,120);
+        imgParams.weight = (float)0.70;
         imgParams.gravity = Gravity.CENTER;
-        imgParams.setMargins(0,30,0,30);
 
         img.setLayoutParams(imgParams);
 
