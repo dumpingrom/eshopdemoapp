@@ -10,11 +10,7 @@
     android:layout_height="wrap_content"
     android:minHeight="50dp"
     android:background="@color/white"
-    tools:context=".MainActivity">
-
-    <!--SLIDER MENU-->
-
-
+    tools:context=".VdActivity">
     <!-- HOME HEADER -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +49,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/home_hats"

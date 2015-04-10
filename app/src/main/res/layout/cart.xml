@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_hats"
-        android:layout_alignParentTop="false"
-        >
+        android:layout_alignParentTop="false">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"

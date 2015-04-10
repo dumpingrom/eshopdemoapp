@@ -91,7 +91,6 @@ public class MainActivity extends VdActivity {
         header = (RelativeLayout)findViewById(R.id.header);
         header_home_title = (TextView)findViewById(R.id.header_home_title);
         header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
-        header_title = (TextView)findViewById(R.id.header_home_title);
 
 
         home_hats = (RelativeLayout) findViewById(R.id.home_hats);
@@ -114,12 +113,9 @@ public class MainActivity extends VdActivity {
         home_bags_txt = (TextView) findViewById(R.id.home_bags_txt);
         home_bags_num = (TextView) findViewById(R.id.home_bags_num);
 
-
-
         /*
         SET FONTS
          */
-        header_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf"));
         header_home_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
 
         home_hats_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));

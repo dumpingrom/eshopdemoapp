@@ -283,6 +283,7 @@ public class Cart extends VdActivity {
         rl.setLayoutParams(rlp);
         rl.setPadding(10,10,10,10);
         rl.setBackgroundColor(Color.WHITE);
+
         return rl;
     }
 
@@ -347,13 +348,13 @@ public class Cart extends VdActivity {
 
     /**
      * Get cart grand total
-     * @return
+     * @return int total price
      */
     private int getTotalPrice(){ return this.totalPrice; }
 
     /**
      * Set cart grand total by adding prices together
-     * @param price
+     * @param price (int)
      */
     private void setTotalPrice(int price){ this.totalPrice = this.totalPrice + price; }
 }

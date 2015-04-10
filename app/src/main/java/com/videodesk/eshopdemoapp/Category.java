@@ -1,7 +1,5 @@
 package com.videodesk.eshopdemoapp;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -327,7 +325,6 @@ public class Category extends VdActivity {
                                             id = i;
                                         }
                                     }
-                                    //Log.d("RL ID******************", "id =" + id);
                                     Intent i = new Intent(Category.this, Product.class);
                                     Bundle b = new Bundle();
                                     b.putStringArray("productInfo", getStringBundle(id));//must not use 0 as an id
