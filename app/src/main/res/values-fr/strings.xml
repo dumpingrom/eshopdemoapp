@@ -27,7 +27,7 @@
     <!-- Checkout -->
     <string name="goToCheckout">ALLER AU PAIEMENT</string>
 
-    <string name="payment"> PAIEMENT</string>
+    <string name="payment">PAIEMENT</string>
 
     <string name="checkout_identity">Veuillez entrer vos informations d\'identité</string>
     <string name="checkout_firstname">Prénom</string>

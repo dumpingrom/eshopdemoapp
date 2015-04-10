@@ -30,6 +30,7 @@
                 android:layout_alignParentEnd="true"
                 android:padding="7dp"/>
             <TextView
+                android:id="@+id/header_home_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/shop"
