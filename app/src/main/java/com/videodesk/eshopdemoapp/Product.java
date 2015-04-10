@@ -1,7 +1,5 @@
 package com.videodesk.eshopdemoapp;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,8 +11,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,10 +33,9 @@ public class Product extends VdActivity {
     ImageView slidermenu_bags = null;
     ImageView slidermenu_cart = null;
 
-    boolean isMenuOpen;
-
     LinearLayout header_container = null;
     LinearLayout header;
+    TextView header_home_title;
     TextView header_title;
     TextView header_num;
     ImageView header_menu_icon;
@@ -48,13 +43,12 @@ public class Product extends VdActivity {
     String[] productInfo = new String[5];
     String category = "";
 
-
-
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
         setProductInfo(b.getStringArray("productInfo"));
         setCategory(b.getString("cat"));
+        setIsMenuOpen(false);
 
         setContentView(R.layout.product);
 
@@ -77,10 +71,16 @@ public class Product extends VdActivity {
 
         header_container = (LinearLayout)findViewById(R.id.header_container);
         header = (LinearLayout)findViewById(R.id.header);
+        header_home_title = (TextView)findViewById(R.id.header_home_title);
         header_title = (TextView)findViewById(R.id.header_title);
         header_num = (TextView)findViewById(R.id.header_num);
         header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
 
+        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
+        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
+        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
+        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
+        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
         /*
         END SET VIEWS
          */
@@ -88,63 +88,56 @@ public class Product extends VdActivity {
         /*
         SLIDER MENU
          */
-
-        slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
-        slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
-        slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
-        slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
-        slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
         slidermenu_hats.setOnClickListener(handler);
         slidermenu_shoes.setOnClickListener(handler);
         slidermenu_glasses.setOnClickListener(handler);
         slidermenu_bags.setOnClickListener(handler);
         slidermenu_cart.setOnClickListener(handler);
         header_menu_icon.setOnClickListener(handler);
-
-
-        setIsMenuOpen(false);
-
         /*
         END SLIDER MENU
          */
 
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
-        Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
-
-        /*
-        TODO
-        Simplify header generation (set text + bg-col + num...)
+        /**
+         * GENERATE HEADER
          */
         int colorId;
-        CharSequence numId;
+        String numId;
+        String titleId;
         switch (getCategory()){
             case "hats":
                 colorId = getResources().getColor(R.color.color_hats);
-                numId = getResources().getText(R.string.one);
+                numId = getResources().getString(R.string.one);
+                titleId = getResources().getString(R.string.hats);
                 break;
             case "shoes":
                 colorId = getResources().getColor(R.color.color_shoes);
-                numId = getResources().getText(R.string.two);
+                numId = getResources().getString(R.string.two);
+                titleId = getResources().getString(R.string.shoes);
                 break;
             case "glasses":
                 colorId = getResources().getColor(R.color.color_glasses);
-                numId = getResources().getText(R.string.three);
+                numId = getResources().getString(R.string.three);
+                titleId = getResources().getString(R.string.glasses);
                 break;
             case "bags":
                 colorId = getResources().getColor(R.color.color_bags);
-                numId = getResources().getText(R.string.four);
+                numId = getResources().getString(R.string.four);
+                titleId = getResources().getString(R.string.bags);
                 break;
             default:
                 colorId = getResources().getColor(R.color.white);
                 numId = "";
+                titleId = "";
                 break;
         }
-
         header.setBackgroundColor(colorId);
         header_num.setText(numId);
         slidermenu.setBackgroundColor(colorId);
-        header_title.setTypeface(roboto_bold);
-        header_num.setTypeface(georgia);
+        header_title.setText(titleId);
+        header_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf"));
+        header_home_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
+        header_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
 
         product_container.setGravity(Gravity.CENTER_HORIZONTAL);
         product_container.addView(addProductView());
@@ -164,11 +157,8 @@ public class Product extends VdActivity {
         img.setScaleType(ImageView.ScaleType.FIT_CENTER);
         img.setId(View.generateViewId());
         img.setPadding(dpFromPx(this, 50),dpFromPx(this, 50),dpFromPx(this, 50),dpFromPx(this, 50));
-        //img.setMaxHeight();
 
         LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, pxFromDp(this, 350));
-        //imgParams.width = pxFromDp(this, 220);
-        //imgParams.height = pxFromDp(this,120);
         imgParams.weight = (float)0.70;
         imgParams.gravity = Gravity.CENTER;
 
@@ -220,7 +210,6 @@ public class Product extends VdActivity {
         longDesc.setTextColor(Color.BLACK);
         longDesc.setText(getProductInfo(2));
         longDesc.setId(View.generateViewId());
-        //Log.d("LONG DESC CONTENT******",longDesc.getText().toString());
 
         RelativeLayout.LayoutParams longDescParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         longDescParams.setMargins(pxFromDp(this, 10), 0, 0, pxFromDp(this, 20));
@@ -254,17 +243,16 @@ public class Product extends VdActivity {
 
         addToCart.setLayoutParams(addToCartParams);
 
+        /**
+         * Add to cart button handler
+         */
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DataHolder.getInstance().setCart(getProduct());
-                //ADD INTENT HERE
 
                 Toast.makeText(getApplicationContext(), getProductInfo(0) + " has been added to your cart!", Toast.LENGTH_LONG).show();
 
-                /*Intent intent = new Intent(Product.this, Cart.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fadein, R.anim.fadeout);*/
                 finish();
             }
         });
@@ -306,32 +294,62 @@ public class Product extends VdActivity {
     /*
     GETTERS / SETTERS
      */
+
+    /**
+     * Temporarily stores the info of products that are currently being generated
+     * @param pi
+     * String[] Product info
+     */
     public void setProductInfo(String[] pi){
         productInfo = pi;
     }
 
+    /**
+     * Get a set of info for one product
+     * @return String[]
+     */
+    public String[] getProduct(){ return productInfo;}
+
+    /**
+     * Get a specific piece of info from productInfo[]
+     * @param i
+     * Index of product info needed
+     * @return String
+     * 0: title
+     * 1: short description
+     * 2: long description
+     * 3: price
+     * 4: image path
+     */
     public String getProductInfo( int i){
         return productInfo[i];
     }
 
-    public String[] getProduct(){ return productInfo;}
-
+    /**
+     * Get the cat key from Bundle and set product category accordingly
+     * @param cat
+     */
     public void setCategory(String cat){
         category = cat;
     }
 
+    /**
+     * Get product category (used for header and slider menu generation)
+     * @return category (String)
+     */
     public String getCategory(){
         return category;
     }
 
     /*
-    END GETTERS / SETTERS
-     */
-
-    /*
-    HANDLER
+    MENU HANDLER
      */
     View.OnClickListener handler = new View.OnClickListener(){
+        /**
+         * On click Listener
+         * @param v
+         * View
+         */
         @Override
         public void onClick(View v){
             if (v == slidermenu_hats){
@@ -378,14 +396,10 @@ public class Product extends VdActivity {
             else if(v == header_menu_icon){
                 launchMenuAnimation(slidermenu);
             }
-
-            //must not finish activity on header click
+            //Activity killed if changing category
             if (v.getParent() == slidermenu){
                 finish();
             }
         }
     };
-    /*
-    END HANDLER
-     */
 }

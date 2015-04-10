@@ -13,8 +13,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,11 +28,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * Created by romain@videodesk on 23/02/15.
+ *
+ * Category
  */
 
 public class Category extends VdActivity {
-    LinearLayout header_container = null;
     LinearLayout header;
+    TextView header_home_title;
     TextView header_title;
     TextView header_num;
     ImageView header_menu_icon;
@@ -46,16 +46,10 @@ public class Category extends VdActivity {
     ImageView slidermenu_bags = null;
     ImageView slidermenu_cart = null;
 
-    boolean isMenuOpen;
-
-    ScrollView scr = null;
     InputStream stream = null;
 
     public String category = "";
     public String[][] productInfo = new String[10][5];
-
-    int rlId;
-
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -81,7 +75,6 @@ public class Category extends VdActivity {
         /*
         SET VIEWS
          */
-
         slidermenu = (LinearLayout)findViewById(R.id.slidermenu);
         slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
         slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
@@ -91,46 +84,51 @@ public class Category extends VdActivity {
 
 
         header = (LinearLayout)findViewById(R.id.header);
+        header_home_title = (TextView)findViewById(R.id.header_home_title);
         header_num = (TextView)findViewById(R.id.header_num);
         header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
         header_title = (TextView)findViewById(R.id.header_title);
 
-        /*
-        END SET VIEWS
+        /**
+         * GENERATE HEADER
          */
-
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
-        Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
-
         int colorId;
-        CharSequence numId;
+        String numId;
+        String titleId;
         switch (getCategory()){
             case "hats":
                 colorId = getResources().getColor(R.color.color_hats);
-                numId = getResources().getText(R.string.one);
+                numId = getResources().getString(R.string.one);
+                titleId = getResources().getString(R.string.hats);
                 break;
             case "shoes":
                 colorId = getResources().getColor(R.color.color_shoes);
-                numId = getResources().getText(R.string.two);
+                numId = getResources().getString(R.string.two);
+                titleId = getResources().getString(R.string.shoes);
                 break;
             case "glasses":
                 colorId = getResources().getColor(R.color.color_glasses);
-                numId = getResources().getText(R.string.three);
+                numId = getResources().getString(R.string.three);
+                titleId = getResources().getString(R.string.glasses);
                 break;
             case "bags":
                 colorId = getResources().getColor(R.color.color_bags);
-                numId = getResources().getText(R.string.four);
+                numId = getResources().getString(R.string.four);
+                titleId = getResources().getString(R.string.bags);
                 break;
             default:
                 colorId = getResources().getColor(R.color.white);
                 numId = "";
+                titleId = "";
                 break;
         }
         header.setBackgroundColor(colorId);
         header_num.setText(numId);
         slidermenu.setBackgroundColor(colorId);
-        header_title.setTypeface(roboto_bold);
-        header_num.setTypeface(georgia);
+        header_title.setText(titleId);
+        header_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf"));
+        header_home_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
+        header_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
 
          /*
         SET HANDLER
@@ -142,9 +140,6 @@ public class Category extends VdActivity {
         slidermenu_cart.setOnClickListener(handler);
         header.setOnClickListener(handler);
         header_menu_icon.setOnClickListener(handler);
-        /*
-        END SET HANDLER
-         */
 
         /*
         OPEN XML STREAM AND PARSE CONTENT (cat from Bundle)
@@ -173,15 +168,20 @@ public class Category extends VdActivity {
             parser.setInput(stream, null);
 
            category_container.addView(parseXml(parser));
-            //scr.addView(header_container);
         } catch ( IOException|XmlPullParserException e ) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     * @param xpp XmlPullParser applied to content XML files (assets/xml)
+     * @return A ScrollView generated from xml files.
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     private ScrollView parseXml(XmlPullParser xpp) throws XmlPullParserException, IOException{
         int e = xpp.getEventType();
-        String name = null;
         int previousEvent = 0;
         String previousText = null;
 
@@ -202,20 +202,16 @@ public class Category extends VdActivity {
 
 
         while (e != XmlPullParser.END_DOCUMENT){
-            name = xpp.getName();
             switch(e){
                 case XmlPullParser.START_DOCUMENT:
-                   //Log.d("log", "Document Started");
                     break;
 
                 case XmlPullParser.START_TAG:
-                    //Log.d("log", "<"+name+">");
 
                     if("product".equals(xpp.getName())){
                         rl = new RelativeLayout(this);
 
                         //set Relative Layout rules
-                        //lp.addRule(RelativeLayout.END_OF, rlId);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         lp.setMargins(pxFromDp(this, 20), pxFromDp(this, 10), pxFromDp(this, 20), pxFromDp(this, 10));
 
@@ -224,7 +220,6 @@ public class Category extends VdActivity {
                         rl.setPadding(10,10,10,10);
 
                         rl.setId(rlId);
-                        //Log.d("SETID*************", "Just created Relative Layout with id"+rlId);
                         rlId++;
                     }
                     previousText = xpp.getName();
@@ -234,9 +229,7 @@ public class Category extends VdActivity {
                     if(previousEvent != XmlPullParser.END_TAG && !"".equals(xpp.getText())){
                         switch(previousText){
                             case "name":
-                                //Log.d("log", "Product name: "+xpp.getText());
                                 setStringBundle(rl.getId(), 0, xpp.getText());
-                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][0] to: "+getString(rl.getId(), 0));
 
                                 title = new TextView(this);
                                 title.setText(xpp.getText());
@@ -254,10 +247,7 @@ public class Category extends VdActivity {
                                 }
                                 break;
                             case "description":
-                                //Log.d("log", "Product description: "+xpp.getText());
                                 setStringBundle(rl.getId(), 1, xpp.getText());
-                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][1] to: "+getString(rl.getId(), 1));
-
                                 description = new TextView(this);
 
                                 description.setText(xpp.getText());
@@ -277,12 +267,9 @@ public class Category extends VdActivity {
                                 break;
                             case "long":
                                 setStringBundle(rl.getId(), 2, xpp.getText());
-                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][2] to: "+getString(rl.getId(), 2));
                                 break;
                             case "price":
-                                //Log.d("log", "Product price: "+xpp.getText());
                                 setStringBundle(rl.getId(), 3, xpp.getText());
-                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][3] to: "+getString(rl.getId(), 3));
 
                                 price = new TextView(this);
                                 price.setText("$ "+xpp.getText());
@@ -305,10 +292,7 @@ public class Category extends VdActivity {
                                 }
                                 break;
                             case "image":
-                                //Log.d("log", "Product image URL: "+xpp.getText());
                                 setStringBundle(rl.getId(), 4, xpp.getText());
-                                //Log.d("Bundle", "Set productInfo["+rl.getId()+"][4] to: "+getString(rl.getId(), 4));
-
                                 String imgUrl = xpp.getText();
 
                                 img = new ImageView(this);
@@ -325,13 +309,12 @@ public class Category extends VdActivity {
 
                                 img.setLayoutParams(imgParams);
 
-                                //Log.d("Info", "DrawableId = " + drawableId);
                                 if(rl != null){
                                     rl.addView(img);
                                 }
                                 break;
                             default:
-                                //Log.d("log", "Text not found");
+                                Log.e("XML PARSER *** ", "Text not found!");
                                 break;
                         }
                         if(rl != null) {
@@ -360,8 +343,6 @@ public class Category extends VdActivity {
                     break;
 
                 case XmlPullParser.END_TAG:
-                    //Log.d("log", "</"+xpp.getName()+">");
-
                     if("product".equals(xpp.getName())){
                         ll.addView(rl);
                 }
@@ -374,79 +355,6 @@ public class Category extends VdActivity {
         scrollView.addView(ll);
         return scrollView;
     }
-
-    /*
-    TOOLS
-     */
-
-    /*
-        slider menu animation
-     */
-
-    /*public static int dpFromPx(final Context context, final float px) {
-        return Math.round(px / context.getResources().getDisplayMetrics().density);
-    }
-
-    public static int pxFromDp(final Context context, final float dp) {
-        return Math.round(dp * context.getResources().getDisplayMetrics().density);
-    }
-
-    public void expand(final View v){
-        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final int targetHeight = pxFromDp(this.getApplicationContext(), 75);
-
-        v.getLayoutParams().height = 0;
-        v.setVisibility(View.VISIBLE);
-
-        Animation a = new Animation() {
-
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1 ? targetHeight : (int)(targetHeight*interpolatedTime);
-                v.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(500);
-        v.startAnimation(a);
-    }
-
-    public void collapse(final View v){
-        final int initialHeight = v.getMeasuredHeight();
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
-                    v.setVisibility(View.GONE);
-                }
-                else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
-                    v.requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(500);
-        v.startAnimation(a);
-    }*/
-    /*
-        end slider menu animation
-     */
-
-    /*
-    END TOOLS
-     */
 
     /***************************
      * GETTERS / SETTERS

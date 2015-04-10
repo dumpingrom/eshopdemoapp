@@ -26,11 +26,11 @@ public class MainActivity extends VdActivity {
     ImageView slidermenu_glasses = null;
     ImageView slidermenu_bags = null;
     ImageView slidermenu_cart = null;
-    LinearLayout toggleMenu;
 
     RelativeLayout header = null;
     TextView header_title;
     ImageView header_menu_icon;
+    TextView header_home_title;
 
     RelativeLayout home_hats = null;
 
@@ -56,43 +56,32 @@ public class MainActivity extends VdActivity {
     TextView home_bags_txt = null;
     TextView home_bags_num = null;
 
-    /*
-    END DECLARE VIEWS
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
-        Typeface roboto_black = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf");
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
-
         setContentView(R.layout.activity_main);
+
+        home_container = (LinearLayout)findViewById(R.id.home_container);
 
         /*
         PREPEND SLIDER MENU
          */
-        home_container = (LinearLayout)findViewById(R.id.home_container);
-
         LayoutInflater inflater;
         inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
         try{
             slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
+            home_container.addView(slidermenu, 0);
         } catch(InflateException e){
             Log.e("Inflater error********", ""+e);
         }
 
-        home_container.addView(slidermenu, 0);
-        /*
-        END PREPEND SLIDER MENU
-         */
-
-
         /*
         SET VIEWS
          */
+
+
         slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
         slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
         slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
@@ -100,6 +89,7 @@ public class MainActivity extends VdActivity {
         slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
 
         header = (RelativeLayout)findViewById(R.id.header);
+        header_home_title = (TextView)findViewById(R.id.header_home_title);
         header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
         header_title = (TextView)findViewById(R.id.header_home_title);
 
@@ -127,34 +117,25 @@ public class MainActivity extends VdActivity {
 
 
         /*
-        END SET VIEWS
-         */
-
-        /*
         SET FONTS
          */
-        header_title.setTypeface(roboto_bold);
+        header_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf"));
+        header_home_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
 
-        home_hats_txt.setTypeface(roboto_black);
-        home_shoes_txt.setTypeface(roboto_black);
-        home_glasses_txt.setTypeface(roboto_black);
-        home_bags_txt.setTypeface(roboto_black);
+        home_hats_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
+        home_shoes_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
+        home_glasses_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
+        home_bags_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
 
-        home_hats_num.setTypeface(georgia);
-        home_shoes_num.setTypeface(georgia);
-        home_glasses_num.setTypeface(georgia);
-        home_bags_num.setTypeface(georgia);
-
-        /*
-        END SET FONTS
-         */
-
+        home_hats_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
+        home_shoes_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
+        home_glasses_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
+        home_bags_num.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf"));
 
 
         /*
         SET HANDLERS
          */
-
         home_hats.setOnClickListener(handler);
         home_shoes.setOnClickListener(handler);
         home_glasses.setOnClickListener(handler);
@@ -165,18 +146,6 @@ public class MainActivity extends VdActivity {
         slidermenu_bags.setOnClickListener(handler);
         slidermenu_cart.setOnClickListener(handler);
         header_menu_icon.setOnClickListener(handler);
-
-        /*
-        END SET HANDLERS
-         */
-
-        /*
-        MENU ANIMATION
-         */
-
-        /*
-        END MENU ANIMATION
-         */
     }
 
     /*
@@ -231,7 +200,4 @@ public class MainActivity extends VdActivity {
             }
         }
     };
-    /*
-    END HANDLER
-     */
 }

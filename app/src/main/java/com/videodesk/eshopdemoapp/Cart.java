@@ -1,7 +1,5 @@
 package com.videodesk.eshopdemoapp;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,8 +10,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,31 +25,34 @@ public class Cart extends VdActivity {
 
     LinearLayout cartContainer;
 
+    RelativeLayout header;
+    TextView header_title;
+    TextView header_home_title;
     ImageView header_menu_icon;
 
     Button tmp_checkout_btn = null;
-
     LinearLayout slidermenu;
     ImageView slidermenu_hats;
     ImageView slidermenu_shoes;
     ImageView slidermenu_glasses;
     ImageView slidermenu_bags;
+
     ImageView slidermenu_cart;
 
-    RelativeLayout header;
-    TextView headerCartTitle;
-
-    boolean isMenuOpen;
-
     int totalPrice = 0;
-
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
+        setIsMenuOpen(false);
+
+        /**
+         * VIEWS
+         */
         cart = (LinearLayout)findViewById(R.id.cart);
         cartContainer = (LinearLayout) findViewById(R.id.cart_container);
-        headerCartTitle = (TextView)findViewById(R.id.header_cart_title);
+        header_home_title = (TextView)findViewById(R.id.header_home_title);
+        header_title = (TextView)findViewById(R.id.header_cart_title);
 
         LayoutInflater inflater;
         inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -68,16 +67,16 @@ public class Cart extends VdActivity {
         header = (RelativeLayout)findViewById(R.id.header);
         header_menu_icon = (ImageView)findViewById(R.id.header_menu_icon);
 
-
-        /*
-        SLIDER MENU
-         */
-
         slidermenu_hats = (ImageView)findViewById(R.id.slidemenu_hats);
         slidermenu_shoes = (ImageView)findViewById(R.id.slidemenu_shoes);
         slidermenu_glasses = (ImageView)findViewById(R.id.slidemenu_glasses);
         slidermenu_bags = (ImageView)findViewById(R.id.slidemenu_bags);
         slidermenu_cart = (ImageView)findViewById(R.id.slidemenu_cart);
+
+        /**
+         * SLIDER MENU
+         */
+
         slidermenu_hats.setOnClickListener(handler);
         slidermenu_shoes.setOnClickListener(handler);
         slidermenu_glasses.setOnClickListener(handler);
@@ -85,19 +84,8 @@ public class Cart extends VdActivity {
         slidermenu_cart.setOnClickListener(handler);
         header_menu_icon.setOnClickListener(handler);
 
-
-        setIsMenuOpen(false);
-
-        /*
-        END SLIDER MENU
-         */
-
-        Typeface georgia = Typeface.createFromAsset(getAssets(), "fonts/Georgia.ttf");
-        Typeface roboto = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Regular.ttf");
-        Typeface roboto_black = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf");
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf");
-        Typeface roboto_italic = Typeface.createFromAsset(getAssets(), "fonts/Roboto_Italic.ttf");
-        headerCartTitle.setTypeface(roboto_bold);
+        header_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Bold.ttf"));
+        header_home_title.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
 
 
         if(DataHolder.getInstance().getCart().size() == 0){
@@ -170,7 +158,7 @@ public class Cart extends VdActivity {
 
 
             tmp_checkout_btn = (Button) findViewById(R.id.tmp_button_checkout);
-            tmp_checkout_btn.setTypeface(roboto_black);
+            tmp_checkout_btn.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Black.ttf"));
 
             tmp_checkout_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,10 +171,11 @@ public class Cart extends VdActivity {
         }
     }
 
-    /*****************
-     * GENERATE CART ITEMS AS RELATIVE LAYOUTS
+    /**
      * @param i, int from DataHolder
      * @return RelativeLayout
+     *
+     * Generates cart items
      */
     public RelativeLayout cartItem(int i){
         RelativeLayout rl = new RelativeLayout(this);
@@ -197,13 +186,12 @@ public class Cart extends VdActivity {
 
 
         for (int j = 0; j < DataHolder.getInstance().getProduct(i).length; j++){
-            //Log.d("PRODUCT ADDED*********", DataHolder.getInstance().getProduct(i)[j]);
             switch(j){
                 case 0://title
                     title = new TextView(this);
                     title.setText(DataHolder.getInstance().getProduct(i)[j]);
                     RelativeLayout.LayoutParams txtParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    txtParams.setMargins(pxFromDp(this, 100), 0, 0, 0);
+                    txtParams.setMargins(pxFromDp(this, 75), 0, 0, 0);
                     txtParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
                     txtParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
                     title.setLayoutParams(txtParams);
@@ -213,26 +201,8 @@ public class Cart extends VdActivity {
                     title.setId(View.generateViewId());
 
                     rl.addView(title);
-                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+title.getId());
                     break;
-                case 1://short
-                    /*TextView shortDesc = new TextView(this);
-                    shortDesc.setText(DataHolder.getInstance().getProduct(i)[j]);
-                    RelativeLayout.LayoutParams shortDescParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    shortDescParams.setMargins(pxFromDp(this, 100), pxFromDp(this, 20), 0, 0);
-                    shortDescParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-                    shortDesc.setLayoutParams(shortDescParams);
-                    shortDesc.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto_Regular.ttf"));
-                    shortDesc.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-                    shortDesc.setTextColor(Color.BLACK);
-                    shortDesc.setId(View.generateViewId());
 
-                    rl.addView(shortDesc);
-                    Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+shortDesc.getId());
-                    break;*/
-                case 2://long
-                    //
-                    break;
                 case 3://price
                     setTotalPrice(Integer.parseInt(DataHolder.getInstance().getProduct(i)[j]));
 
@@ -252,8 +222,8 @@ public class Cart extends VdActivity {
                     price.setId(View.generateViewId());
 
                     rl.addView(price);
-                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+price.getId());
                     break;
+
                 case 4://image
                     img = new ImageView(this);
                     int drawableId = this.getResources().getIdentifier(DataHolder.getInstance().getProduct(i)[j], "drawable", this.getPackageName());
@@ -270,7 +240,6 @@ public class Cart extends VdActivity {
                     img.setLayoutParams(imgParams);
 
                     rl.addView(img);
-                    //Log.d("Product Cart*********", "Adding "+DataHolder.getInstance().getProduct(i)[j]+" as View #"+img.getId());
                     break;
                 default:
                     //
@@ -306,16 +275,9 @@ public class Cart extends VdActivity {
             });
 
             rl.addView(trash);
-            //Log.d("Product Cart*********", "Adding trash icon as View #"+trash.getId());
         }
 
-        /*
-        ADD TOTAL PRICE TEXTVIEW
-         */
-
-
-
-        //Log.d("PRODUCT IN CART******", "Displaying Product "+DataHolder.getInstance().getProduct(i)[0]+" in Cart");
+        //Add total price TextView
         LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rlp.setMargins(pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20), pxFromDp(this, 20));
         rl.setLayoutParams(rlp);
@@ -325,8 +287,8 @@ public class Cart extends VdActivity {
     }
 
 
-    /*
-    HANDLER
+    /**
+     * HANDLER
      */
     View.OnClickListener handler = new View.OnClickListener(){
         @Override
@@ -378,18 +340,20 @@ public class Cart extends VdActivity {
             }
         }
     };
-    /*
-    END HANDLER
-     */
 
     /*
    GET/SET
     */
 
+    /**
+     * Get cart grand total
+     * @return
+     */
     private int getTotalPrice(){ return this.totalPrice; }
 
-    private void setTotalPrice(int price){ this.totalPrice = this.totalPrice + price; }
-    /*
-    END GET/SET
+    /**
+     * Set cart grand total by adding prices together
+     * @param price
      */
+    private void setTotalPrice(int price){ this.totalPrice = this.totalPrice + price; }
 }

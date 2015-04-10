@@ -3,8 +3,6 @@ package com.videodesk.eshopdemoapp;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.view.InflateException;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -12,21 +10,11 @@ import android.widget.LinearLayout;
 
 /**
  * Created by videodesk on 09/04/15.
+ *
+ * This is the mother class of all activities, it contains useful tools and attrs
  */
 public class VdActivity extends Activity {
     boolean isMenuOpen = false;
-    LinearLayout slidermenu;
-
-    public void initSlider() {
-        try{
-            LayoutInflater inflater;
-
-            inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            this.slidermenu = (LinearLayout)inflater.inflate(R.layout.slider_menu, null);
-        } catch(InflateException e){
-            Log.e("Inflater error********", ""+e);
-        }
-    }
 
     public void launchMenuAnimation(View v) {
         Log.d("MENU ANIM*******", "launchMenuAnimation");
@@ -43,10 +31,9 @@ public class VdActivity extends Activity {
     }
 
     /**
-     *
-     * @param v
-     *
      * Expand the menu area by 75 dp.
+     * @param v
+     * the View to be expanded (typically slider menu)
      */
 
     public void expand(final View v) {
@@ -74,6 +61,11 @@ public class VdActivity extends Activity {
         v.startAnimation(a);
     }
 
+    /**
+     * Collapse the slider menu and hide it
+     * @param v
+     * The View to be collapsed (typically slider menu)
+     */
     public void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
@@ -98,18 +90,38 @@ public class VdActivity extends Activity {
         v.startAnimation(a);
     }
 
+    /**
+     * Convert pixels into dp
+     * @param context
+     * @param px
+     * @return int value converted into dp
+     */
     public int dpFromPx(final Context context, final float px) {
         return Math.round(px / context.getResources().getDisplayMetrics().density);
     }
 
+    /**
+     * Convert dp into pixels
+     * @param context
+     * @param dp
+     * @return int value converted into pixels
+     */
     public int pxFromDp(final Context context, final float dp) {
         return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
 
+    /**
+     * Set boolean value to true when slider menu is open
+     * @param b boolean
+     */
     protected void setIsMenuOpen(boolean b){
         this.isMenuOpen = b;
     }
 
+    /**
+     * Return true if slider menu is open
+     * @return boolean
+     */
     protected boolean getIsMenuOpen(){
         return this.isMenuOpen;
     }
