@@ -2,11 +2,17 @@ package com.videodesk.eshopdemoapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 /**
  * Created by videodesk on 09/04/15.
@@ -15,6 +21,69 @@ import android.widget.LinearLayout;
  */
 public class VdActivity extends Activity {
     boolean isMenuOpen = false;
+    protected Typeface georgia;
+    protected Typeface roboto;
+    protected Typeface roboto_bold;
+    protected Typeface roboto_black;
+
+    protected View.OnClickListener handler;
+
+    protected void init() {
+        this.georgia = Typeface.createFromAsset(getResources().getAssets(), "fonts/Georgia.ttf");
+        this.roboto = Typeface.createFromAsset(getResources().getAssets(), "fonts/Roboto_Regular.ttf");
+        this.roboto_bold = Typeface.createFromAsset(getResources().getAssets(), "fonts/Roboto_Bold.ttf");
+        this.roboto_black = Typeface.createFromAsset(getResources().getAssets(), "fonts/Roboto_Black.ttf");
+
+        this.handler = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.toString().contains("hats")){
+                    Intent i = new Intent(VdActivity.this , Category.class);
+                    Bundle b = new Bundle();
+                    b.putString("cat", "hats");
+                    i.putExtras(b);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                    //finish();
+                }
+                else if (v.toString().contains("shoes")){
+                    Intent i = new Intent(VdActivity.this , Category.class);
+                    Bundle b = new Bundle();
+                    b.putString("cat", "shoes");
+                    i.putExtras(b);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                    //finish();
+                }
+                else if (v.toString().contains("glasses")){
+                    Intent i = new Intent(VdActivity.this, Category.class);
+                    Bundle b = new Bundle();
+                    b.putString("cat", "glasses");
+                    i.putExtras(b);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                    //finish();
+                }
+                else if(v.toString().contains("bags")){
+                    Intent i = new Intent(VdActivity.this, Category.class);
+                    Bundle b = new Bundle();
+                    b.putString("cat", "bags");
+                    i.putExtras(b);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                    //finish();
+                }
+                else if(v.toString().contains("cart")){
+                    Intent i = new Intent(VdActivity.this, Cart.class);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                }
+                else if(v.toString().contains("menu_icon")){
+                    launchMenuAnimation(findViewById(R.id.slidermenu));
+                }
+            }
+        };
+    }
 
     public void launchMenuAnimation(View v) {
         Log.d("MENU ANIM*******", "launchMenuAnimation");
@@ -57,7 +126,7 @@ public class VdActivity extends Activity {
             }
         };
 
-        a.setDuration(500);
+        a.setDuration(250);
         v.startAnimation(a);
     }
 
@@ -86,7 +155,7 @@ public class VdActivity extends Activity {
             }
         };
 
-        a.setDuration(500);
+        a.setDuration(250);
         v.startAnimation(a);
     }
 
@@ -124,5 +193,34 @@ public class VdActivity extends Activity {
      */
     protected boolean getIsMenuOpen(){
         return this.isMenuOpen;
+    }
+
+    /**
+     * Recursive function allowing to get all children from a View tree
+     *
+     * @param v The container of which children are being returned
+     * @return An ArrayList with all children of v
+     */
+    protected ArrayList<View> getAllChildren(View v) {
+        if(!(v instanceof ViewGroup)) {
+            ArrayList<View> viewArrayList = new ArrayList<>();
+            viewArrayList.add(v);
+            return viewArrayList;
+        }
+
+        ArrayList<View> result = new ArrayList<>();
+
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            View child = vg.getChildAt(i);
+            ArrayList<View> viewArrayList = new ArrayList<>();
+            if(!(viewArrayList.contains(v))) {
+                viewArrayList.add(v);
+            }
+            viewArrayList.addAll(getAllChildren(child));
+
+            result.addAll(viewArrayList);
+        }
+        return result;
     }
 }
